@@ -1,15 +1,15 @@
-# LAB 3: DHCP КОНФИГУРАЦИЯ
+# SEM 3: DHCP КОНФИГУРАЦИЯ
 ## Dynamic Host Configuration Protocol
 
 **Цел:** Да се научите да конфигурирате DHCP на Router и да автоматизирате IP адресирането на устройствата.
 
 **Продължителност:** 60-90 минути
 
-**Prerequisite:** Завършен Lab 2 (VLAN-и и Inter-VLAN routing)
+**Prerequisite:** Завършен Sem 2 (VLAN-и и Inter-VLAN routing)
 
 ---
 
-## ЧАСТ 1: Топология - продължаваме от Lab 2
+## ЧАСТ 1: Топология - продължаваме от Sem 2
 
 ### Използваме същата топология:
 ```
@@ -447,9 +447,9 @@ show ip dhcp conflict
 
 ## СЛЕДВАЩА СТЪПКА
 
-В **Lab 4** ще научим:
+В **Sem 4** ще научим:
 - DNS конфигурация
 - Как да създадем локален DNS сървър
 - Name resolution в мрежата
 
-**Запазете файла като:** `Lab3_DHCP_YourName.pkt`
+**Запазете файла като:** `Sem3_DHCP_YourName.pkt`
