@@ -1,4 +1,4 @@
-# LAB 7: Management VLAN и йерархична топология (Multi-tier)
+# SEM 7: Management VLAN и йерархична топология (Multi-tier)
 
 **Продължителност:** 90-120 минути  
 **Цел:** Научаване на концепцията за Management VLAN за сигурно управление и изграждане на йерархична мрежа (Access/Distribution/Core)
@@ -7,7 +7,7 @@
 
 ## ЦЕЛИ НА УПРАЖНЕНИЕТО
 
-След завършване на този лаб ще можете да:
+След завършване на този семинар ще можете да:
 - ✅ Създавате и конфигурирате Management VLAN
 - ✅ Разбирате защо VLAN 1 е несигурен за management
 - ✅ Изграждате йерархична топология (Access, Distribution, Core слоеве)
@@ -596,8 +596,8 @@ spanning-tree vlan 1-4094 priority 4096
 - Изграждаш йерархична топология (Access/Distribution/Core)
 - Прилагаш best practices за enterprise networks
 
-**Следващ лаб:** Lab 8 - NAT Configuration
+**Следващ семинар:** Sem 8 - NAT Configuration
 
 ---
 
-**Готово! Запази .pkt файла като `Lab7_Management_VLAN_Hierarchical.pkt`**
+**Готово! Запази .pkt файла като `Sem7_Management_VLAN_Hierarchical.pkt`**
