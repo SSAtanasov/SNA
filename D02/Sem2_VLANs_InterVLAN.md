@@ -1,11 +1,11 @@
-# LAB 2: VLAN КОНФИГУРАЦИЯ И INTER-VLAN ROUTING
+# SEM 2: VLAN КОНФИГУРАЦИЯ И INTER-VLAN ROUTING
 ## Сегментиране на мрежата с VLAN-и
 
 **Цел:** Да се научите да създавате VLAN-и, да ги назначавате на портове и да конфигурирате Router-on-a-Stick.
 
 **Продължителност:** 90-120 минути
 
-**Prerequisite:** Завършен Lab 1
+**Prerequisite:** Завършен Sem 1
 
 ---
 
@@ -1036,7 +1036,7 @@ SW1(config-if-range)# shutdown
 
 ## СЛЕДВАЩА СТЪПКА
 
-В **Lab 3** ще научим:
+В **Sem 3** ще научим:
 - **DHCP конфигурация** (автоматично IP адресиране)
 - Router като DHCP server за множество VLAN-и
 - DHCP Relay Agent
@@ -1091,4 +1091,4 @@ interface GigE0/0.99
 
 ---
 
-**Успех с лаборатриторията! **
+**Успех! **
