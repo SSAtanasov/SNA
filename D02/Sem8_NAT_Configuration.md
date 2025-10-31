@@ -1,4 +1,4 @@
-# LAB 8: NAT (Network Address Translation) конфигурация
+# SEM 8: NAT (Network Address Translation) конфигурация
 
 **Продължителност:** 75-90 минути  
 **Цел:** Научаване на NAT конфигурация за симулиране на връзка с интернет и споделяне на публични IP адреси
@@ -7,7 +7,7 @@
 
 ## ЦЕЛИ НА УПРАЖНЕНИЕТО
 
-След завършване на този лаб ще можете да:
+След завършване на този семинар ще можете да:
 - ✅ Разбирате какво е NAT и защо се използва
 - ✅ Конфигурирате Static NAT (1:1 mapping)
 - ✅ Конфигурирате Dynamic NAT (pool-based)
@@ -569,16 +569,12 @@ ip nat inside source static tcp 192.168.10.50 80 203.0.113.1 8080
 
 ---
 
-## СЛЕДВАЩИ СТЪПКИ
-
 Сега знаеш как да:
 - Конфигурираш Static NAT за сървъри
 - Конфигурираш Dynamic NAT с pools
 - Конфигурираш PAT (NAT Overload) за споделяне на IP
 - Troubleshoot NAT проблеми
 
-**Следващ лаб:** Lab 9 - Integrated Network Design (3+ subnets + диаграми)
-
 ---
 
-**Готово! Запази .pkt файла като `Lab8_NAT_Configuration.pkt`**
+**Готово! Запази .pkt файла като `Sem8_NAT_Configuration.pkt`**
