@@ -1,11 +1,11 @@
-# LAB 4: DNS КОНФИГУРАЦИЯ
+# SEM 4: DNS КОНФИГУРАЦИЯ
 ## Domain Name System - Name Resolution
 
 **Цел:** Да се научите да конфигурирате DNS сървър в Packet Tracer и да разберете как работи name resolution.
 
 **Продължителност:** 60-75 минути
 
-**Prerequisite:** Завършени Lab 1-3
+**Prerequisite:** Завършени Sem 1-3
 
 ---
 
@@ -433,9 +433,9 @@ ip dhcp pool ADMIN_POOL
 
 ## СЛЕДВАЩА СТЪПКА
 
-В **Lab 5** ще научим:
+В **Sem 5** ще научим:
 - Access Control Lists (ACL)
 - Как да контролираме трафика между VLAN-и
 - Security policies
 
-**Запазете файла като:** `Lab4_DNS_YourName.pkt`
+**Запазете файла като:** `Sem4_DNS_YourName.pkt`
