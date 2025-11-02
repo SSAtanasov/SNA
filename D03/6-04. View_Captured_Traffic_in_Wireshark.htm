@@ -1419,13 +1419,7 @@
     <h1 style="margin-left: 0in; text-indent: 0in">Objectives</h1>
 
     <p class="BodyTextL25Bold">
-      <span style="letter-spacing: -0.05pt">Part</span><span style="letter-spacing: -0.3pt"> </span>1:<span style="letter-spacing: -0.35pt">
-      </span>Download<span style="letter-spacing: -0.4pt"> </span>and<span style="letter-spacing: -0.35pt">
-      </span>Install<span style="letter-spacing: -0.3pt"> </span>Wireshark
-    </p>
-
-    <p class="BodyTextL25Bold">
-      <span style="letter-spacing: -0.05pt">Part</span><span style="letter-spacing: -0.2pt"> </span>2:<span style="letter-spacing: -0.3pt">
+      <span style="letter-spacing: -0.05pt">Part</span><span style="letter-spacing: -0.2pt"> </span>1:<span style="letter-spacing: -0.3pt">
       </span>Capture<span style="letter-spacing: -0.2pt"> </span>and<span style="letter-spacing: -0.05pt">
       </span>Analyze<span style="letter-spacing: -0.25pt"> </span><span style="letter-spacing: -0.05pt">ARP</span><span style="letter-spacing: -0.35pt"> </span>Data<span style="letter-spacing: -0.3pt">
       </span>in<span style="letter-spacing: -0.3pt"> </span>Wireshark
@@ -1448,7 +1442,7 @@
     </p>
 
     <p class="BodyTextL25Bold">
-      <span style="letter-spacing: -0.05pt">Part</span><span style="letter-spacing: -0.15pt"> </span>3:<span style="letter-spacing: -0.2pt">
+      <span style="letter-spacing: -0.05pt">Part</span><span style="letter-spacing: -0.15pt"> </span>2:<span style="letter-spacing: -0.2pt">
       </span>View<span style="letter-spacing: -0.1pt"> </span>the<span style="letter-spacing: -0.15pt">
       </span><span style="letter-spacing: -0.05pt">ARP</span><span style="letter-spacing: -0.25pt"> </span>cache<span style="letter-spacing: -0.25pt">
       </span><span style="letter-spacing: -0.05pt">entries</span><span style="letter-spacing: -0.15pt"> </span>on<span style="letter-spacing: -0.2pt">
@@ -1535,9 +1529,7 @@
     <p class="BodyTextL25">
       Wireshark is a useful tool for anyone working with networks and can be
       used with most labs in the Cisco courses for data analysis and
-      troubleshooting. This lab provides instructions for downloading and
-      installing Wireshark, although it may already be installed. In this lab,
-      you will use Wireshark to capture ARP exchanges on the local network.
+      troubleshooting. In this lab, you will use Wireshark to capture ARP exchanges on the local network.
     </p>
 
     <h1 style="margin-left: 0in; text-indent: 0in">Required Resources</h1>
@@ -1594,259 +1586,7 @@
     <h1>Instructions</h1>
 
     <h2 style="margin-left: 0in; text-indent: 0in">
-      Part 1: <span style="letter-spacing: -0.1pt">Download</span> and
-      Install<span style="letter-spacing: 0.05pt"> </span>Wireshark
-    </h2>
-
-    <p class="MsoBodyText" style="
-          margin-top: 8.4pt;
-          margin-right: 12.2pt;
-          margin-bottom: 6pt;
-          margin-left: 26pt;
-        ">
-      <span style="letter-spacing: -0.05pt">Wireshar</span>k has become the
-      industry standard packet-sniffer program used by network engineers. This
-      open source software is available for many different operating systems,
-      including Windows, Mac, and Linux.
-    </p>
-
-    <p class="MsoBodyText" style="
-          margin-top: 5.9pt;
-          margin-right: 16.8pt;
-          margin-bottom: 6pt;
-          margin-left: 26pt;
-        ">
-      If<span style="letter-spacing: -0.4pt"> </span>Wireshark<span style="letter-spacing: -0.05pt">
-        is</span><span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">already</span><span style="letter-spacing: -0.3pt"> </span>installed<span style="letter-spacing: -0.25pt">
-      </span><span style="letter-spacing: -0.05pt">on your</span><span style="letter-spacing: -0.25pt"> </span>PC,<span style="letter-spacing: -0.05pt">
-      </span><span style="letter-spacing: -0.1pt">you</span><span style="letter-spacing: -0.2pt"> </span>can skip<span style="letter-spacing: -0.25pt">
-      </span><span style="letter-spacing: -0.05pt">Part</span><span style="letter-spacing: -0.25pt"> </span>1<span style="letter-spacing: -0.15pt">
-      </span><span style="letter-spacing: -0.05pt">and</span><span style="letter-spacing: -0.15pt"> </span>go<span style="letter-spacing: -0.2pt">
-      </span>directly<span style="letter-spacing: -0.4pt"> </span>to<span style="letter-spacing: -0.2pt">
-      </span>Part<span style="letter-spacing: -0.25pt"> </span>2.<span style="letter-spacing: -0.15pt">
-      </span>If<span style="letter-spacing: -0.4pt"> </span>Wireshark<span style="letter-spacing: 3.25pt">
-      </span><span style="letter-spacing: -0.05pt">is</span><span style="letter-spacing: -0.3pt"> </span><span style="letter-spacing: -0.05pt">not</span><span style="letter-spacing: -0.2pt"> </span>installed<span style="letter-spacing: -0.3pt">
-      </span>on<span style="letter-spacing: -0.1pt"> your</span><span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">PC,</span><span style="letter-spacing: -0.2pt"> </span>check<span style="letter-spacing: -0.15pt">
-      </span><span style="letter-spacing: -0.05pt">with</span><span style="letter-spacing: -0.1pt"> </span><span style="letter-spacing: -0.05pt">your</span><span style="letter-spacing: -0.35pt"> </span><span style="letter-spacing: -0.05pt">instructor</span><span style="letter-spacing: 0.05pt"> </span>about<span style="letter-spacing: -0.05pt">
-      </span><span style="letter-spacing: -0.05pt">your</span><span style="letter-spacing: -0.35pt">
-      </span>academy’s<span style="letter-spacing: -0.25pt">
-      </span>software<span style="letter-spacing: -0.3pt"> </span>download<span style="letter-spacing: -0.25pt">
-      </span>policy.
-    </p>
-
-    <h3 style="margin-left: 0in; text-indent: 0in">
-      Step 1: Download<span style="letter-spacing: -0.1pt"> </span>Wireshark.
-    </h3>
-
-    <p class="SubStepAlpha">
-      a.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="letter-spacing: -0.05pt">Wireshark</span><span style="letter-spacing: -0.35pt"> </span>can<span style="letter-spacing: -0.5pt">
-      </span>be<span style="letter-spacing: -0.5pt"> </span>downloaded<span style="letter-spacing: -0.5pt">
-      </span>from<span style="letter-spacing: -0.2pt"> </span><a href="http://www.wireshark.org/" target="_blank"><span style="color: blue">www.wireshark.org</span><span style="color: windowtext; text-decoration: none">.</span></a>
-    </p>
-
-    <p class="SubStepAlpha">
-      b.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span>Click<span style="letter-spacing: -0.5pt"> </span><b>Download</b>.
-    </p>
-
-    <p class="SubStepAlpha">
-      c.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span>Choose<span style="letter-spacing: -0.25pt"> </span>the<span style="letter-spacing: -0.35pt">
-      </span>software<span style="letter-spacing: -0.2pt"> </span>version<span style="letter-spacing: -0.2pt">
-      </span><span style="letter-spacing: -0.05pt">you</span><span style="letter-spacing: -0.35pt"> </span>need<span style="letter-spacing: -0.25pt">
-      </span>based<span style="letter-spacing: -0.3pt"> </span>on<span style="letter-spacing: -0.25pt">
-      </span><span style="letter-spacing: -0.05pt">your</span><span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">PC’s</span><span style="letter-spacing: -0.25pt"> </span>architecture<span style="letter-spacing: -0.35pt">
-      </span>and<span style="letter-spacing: -0.35pt"> </span>operating<span style="letter-spacing: -0.3pt">
-      </span>system.<span style="letter-spacing: -0.35pt"> </span>For<span style="letter-spacing: 1.3pt">
-      </span>instance,<span style="letter-spacing: -0.35pt"> </span><span style="letter-spacing: -0.05pt">if</span><span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">you</span><span style="letter-spacing: -0.35pt"> </span>have<span style="letter-spacing: -0.3pt">
-      </span>a<span style="letter-spacing: -0.3pt"> </span>64-bit<span style="letter-spacing: -0.35pt">
-      </span>PC<span style="letter-spacing: -0.35pt"> </span>running<span style="letter-spacing: -0.5pt">
-      </span>Windows,<span style="letter-spacing: -0.35pt"> </span>choose<span style="letter-spacing: -0.3pt">
-      </span><b>Windows<span style="letter-spacing: -0.35pt"> </span><span style="letter-spacing: -0.05pt">Installer</span><span style="letter-spacing: -0.35pt"> </span>(64-bit)</b>.
-    </p>
-
-    <p class="SubStepAlpha">
-      d.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span>After<span style="letter-spacing: -0.35pt"> </span>making<span style="letter-spacing: -0.3pt">
-      </span>the<span style="letter-spacing: -0.3pt"> </span>selection,<span style="letter-spacing: -0.3pt">
-      </span>the<span style="letter-spacing: -0.3pt"> </span>download<span style="letter-spacing: -0.3pt">
-      </span>should<span style="letter-spacing: -0.3pt"> </span>start. Click
-      <b>Save File </b>if prompted. The<span style="letter-spacing: -0.3pt">
-      </span>location<span style="letter-spacing: -0.25pt"> </span>of<span style="letter-spacing: -0.2pt">
-      </span>the<span style="letter-spacing: -0.35pt"> </span>downloaded<span style="letter-spacing: -0.3pt">
-      </span><span style="letter-spacing: -0.05pt">file</span><span style="letter-spacing: -0.2pt"> </span>depends<span style="letter-spacing: -0.25pt">
-      </span>on<span style="letter-spacing: -0.3pt"> </span>the<span style="letter-spacing: 1.6pt">
-      </span>browser<span style="letter-spacing: -0.35pt"> </span>and<span style="letter-spacing: -0.3pt">
-      </span>operating<span style="letter-spacing: -0.35pt"> </span>system<span style="letter-spacing: -0.1pt">
-      </span><span style="letter-spacing: -0.05pt">that</span><span style="letter-spacing: -0.25pt"> </span><span style="letter-spacing: -0.1pt">you</span><span style="letter-spacing: -0.25pt"> </span>use.<span style="letter-spacing: -0.3pt">
-      </span><span style="letter-spacing: 0.05pt">For</span><span style="letter-spacing: -0.5pt"> </span>Windows<span style="letter-spacing: -0.3pt">
-      </span>users,<span style="letter-spacing: -0.3pt"> </span><span style="letter-spacing: -0.05pt">the</span><span style="letter-spacing: -0.25pt"> </span>default<span style="letter-spacing: -0.3pt">
-      </span>location<span style="letter-spacing: -0.25pt"> </span><span style="letter-spacing: -0.05pt">is</span><span style="letter-spacing: -0.3pt"> </span>the
-      <b>Downloads<span style="letter-spacing: 2.4pt"> </span></b><span style="letter-spacing: -0.05pt">folder.</span>
-    </p>
-
-    <h3 style="margin-left: 0in; text-indent: 0in">
-      Step 2: Install Wireshark.
-    </h3>
-
-    <p class="SubStepAlpha">
-      a.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="letter-spacing: 0.05pt">The</span><span style="letter-spacing: -0.45pt"> </span><span style="letter-spacing: -0.05pt">downloaded</span><span style="letter-spacing: -0.4pt"> </span>file<span style="letter-spacing: -0.25pt">
-      </span><span style="letter-spacing: -0.05pt">is</span><span style="letter-spacing: -0.4pt"> </span>named<span style="letter-spacing: -0.4pt">
-      </span><b>Wireshark-win64-x.x.x.exe</b>,<span style="letter-spacing: -0.35pt">
-      </span>where<span style="letter-spacing: -0.3pt"> </span><b>x<span style="letter-spacing: -0.45pt">
-        </span></b>represents<span style="letter-spacing: -0.35pt">
-      </span>the<span style="letter-spacing: -0.4pt"> </span>version<span style="letter-spacing: -0.4pt">
-      </span>number.<span style="letter-spacing: 2pt"> </span>Double-click<span style="letter-spacing: -0.2pt">
-      </span><span style="letter-spacing: -0.05pt">the</span><span style="letter-spacing: -0.35pt"> </span><span style="letter-spacing: -0.05pt">file</span><span style="letter-spacing: -0.3pt"> </span><span style="letter-spacing: -0.05pt">to</span><span style="letter-spacing: -0.35pt"> </span>start<span style="letter-spacing: -0.35pt">
-      </span>the<span style="letter-spacing: -0.3pt"> </span>installation<span style="letter-spacing: -0.35pt">
-      </span>process.
-    </p>
-
-    <p class="SubStepAlpha">
-      b.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span>Respond<span style="letter-spacing: -0.3pt"> </span><span style="letter-spacing: -0.05pt">to</span><span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: 0.05pt">any</span><span style="letter-spacing: -0.4pt"> </span>security<span style="letter-spacing: -0.4pt">
-      </span>messages<span style="letter-spacing: -0.25pt"> </span>that<span style="letter-spacing: -0.15pt">
-      </span><span style="letter-spacing: 0.05pt">may</span><span style="letter-spacing: -0.4pt"> </span>display<span style="letter-spacing: -0.4pt">
-      </span>on<span style="letter-spacing: -0.15pt"> </span><span style="letter-spacing: -0.05pt">your</span><span style="letter-spacing: -0.3pt"> </span>screen.<span style="letter-spacing: -0.25pt">
-      </span>If<span style="letter-spacing: -0.1pt"> </span><span style="letter-spacing: -0.05pt">you</span><span style="letter-spacing: -0.2pt"> </span>already<span style="letter-spacing: -0.3pt">
-      </span>have<span style="letter-spacing: -0.3pt"> </span>a<span style="letter-spacing: -0.25pt">
-      </span>copy<span style="letter-spacing: -0.35pt"> </span>of<span style="letter-spacing: 2.1pt">
-      </span><span style="letter-spacing: -0.05pt">Wireshark</span><span style="letter-spacing: -0.15pt"> </span>on<span style="letter-spacing: -0.2pt">
-      </span><span style="letter-spacing: -0.1pt">your</span><span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">PC, you</span><span style="letter-spacing: -0.2pt"> </span>maybe<span style="letter-spacing: -0.15pt">
-      </span>prompted<span style="letter-spacing: -0.3pt"> </span>to<span style="letter-spacing: -0.2pt">
-      </span>uninstall<span style="letter-spacing: -0.35pt"> </span>the<span style="letter-spacing: -0.3pt">
-      </span>old<span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">version</span><span style="letter-spacing: -0.25pt"> </span>before<span style="letter-spacing: -0.3pt">
-      </span>installing<span style="letter-spacing: -0.3pt"> </span>the<span style="letter-spacing: -0.3pt">
-      </span>new<span style="letter-spacing: -0.25pt"> </span>version.<span style="letter-spacing: 3.05pt">
-      </span>It<span style="letter-spacing: -0.3pt"> </span><span style="letter-spacing: -0.05pt">is</span><span style="letter-spacing: -0.3pt"> </span>recommended<span style="letter-spacing: -0.3pt">
-      </span>that<span style="letter-spacing: -0.1pt"> you</span><span style="letter-spacing: -0.2pt">
-      </span>remove<span style="letter-spacing: -0.3pt">
-      </span><span style="letter-spacing: -0.05pt">the</span><span style="letter-spacing: -0.25pt"> </span><span style="letter-spacing: -0.05pt">old</span><span style="letter-spacing: -0.2pt"> </span>version<span style="letter-spacing: -0.25pt">
-      </span>of<span style="letter-spacing: -0.25pt"> </span><span style="letter-spacing: -0.05pt">Wireshark</span><span style="letter-spacing: -0.1pt"> </span><span style="letter-spacing: -0.05pt">prior</span><span style="letter-spacing: -0.3pt"> </span>to<span style="letter-spacing: -0.3pt">
-      </span>installing<span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">another</span><span style="letter-spacing: -0.15pt"> </span><span style="letter-spacing: -0.05pt">version.</span><span style="letter-spacing: 0.1pt"> </span>Click<span style="letter-spacing: 3.55pt">
-      </span><b>Yes<span style="letter-spacing: -0.4pt"> </span></b>to<span style="letter-spacing: -0.35pt">
-      </span>uninstall<span style="letter-spacing: -0.4pt"> </span>the<span style="letter-spacing: -0.35pt">
-      </span>previous<span style="letter-spacing: -0.3pt"> </span><span style="letter-spacing: -0.05pt">version</span><span style="letter-spacing: -0.25pt"> </span>of<span style="letter-spacing: -0.45pt">
-      </span>Wireshark.
-    </p>
-
-    <p class="SubStepAlpha">
-      c.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span>If<span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">this</span><span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">is</span><span style="letter-spacing: -0.2pt"> </span>the<span style="letter-spacing: -0.3pt">
-      </span>first<span style="letter-spacing: -0.25pt"> </span>time<span style="letter-spacing: -0.15pt">
-      </span><span style="letter-spacing: -0.05pt">to</span><span style="letter-spacing: -0.3pt"> </span><span style="letter-spacing: -0.05pt">install</span><span style="letter-spacing: -0.4pt"> </span>Wireshark,<span style="letter-spacing: -0.25pt">
-      </span><span style="letter-spacing: -0.05pt">or</span><span style="letter-spacing: -0.2pt"> </span>after<span style="letter-spacing: -0.15pt">
-      </span><span style="letter-spacing: -0.1pt">you</span>
-      <span style="letter-spacing: -0.05pt">have</span><span style="letter-spacing: -0.2pt"> </span>completed<span style="letter-spacing: -0.25pt">
-      </span>the<span style="letter-spacing: -0.1pt"> </span>uninstall<span style="letter-spacing: -0.2pt">
-      </span>process,<span style="letter-spacing: -0.15pt"> </span><span style="letter-spacing: -0.05pt">you</span><span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">will</span><span style="letter-spacing: 3.55pt"> </span>navigate<span style="letter-spacing: -0.35pt">
-      </span><span style="letter-spacing: 0.05pt">to</span><span style="letter-spacing: -0.35pt"> </span>the<span style="letter-spacing: -0.5pt">
-      </span>Wireshark<span style="letter-spacing: -0.3pt"> </span>Setup<span style="letter-spacing: -0.15pt">
-      </span><span style="letter-spacing: -0.05pt">wizard.</span><span style="letter-spacing: -0.35pt">
-      </span>Click<span style="letter-spacing: -0.1pt">
-      </span><b>Next</b>.
-    </p>
-
-    <p class="SubStepAlpha">
-      d.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span>Continue<span style="letter-spacing: -0.4pt"> </span>advancing<span style="letter-spacing: -0.35pt">
-      </span>through<span style="letter-spacing: -0.4pt"> </span>the<span style="letter-spacing: -0.25pt">
-      </span>installation<span style="letter-spacing: -0.35pt"> </span>process.<span style="letter-spacing: -0.3pt">
-      </span>Click<span style="letter-spacing: -0.15pt"> </span><b>I<span style="letter-spacing: -0.3pt">
-        </span>Agree<span style="letter-spacing: -0.3pt">
-        </span></b>when<span style="letter-spacing: -0.35pt"> </span>the<span style="letter-spacing: -0.4pt">
-      </span>License<span style="letter-spacing: -0.35pt"> </span>Agreement<span style="letter-spacing: -0.3pt">
-      </span>window<span style="letter-spacing: 4.6pt"> </span>displays.
-    </p>
-
-    <p class="SubStepAlpha">
-      e.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span>Keep<span style="letter-spacing: -0.35pt"> </span>the<span style="letter-spacing: -0.35pt">
-      </span>default<span style="letter-spacing: -0.3pt"> </span>settings<span style="letter-spacing: -0.3pt">
-      </span>on<span style="letter-spacing: -0.3pt"> </span><span style="letter-spacing: -0.05pt">the</span><span style="letter-spacing: -0.25pt"> </span>Choose<span style="letter-spacing: -0.35pt">
-      </span>Components<span style="letter-spacing: -0.15pt"> </span>window<span style="letter-spacing: -0.45pt">
-      </span>and<span style="letter-spacing: -0.3pt"> </span>click<span style="letter-spacing: 0.15pt">
-      </span><b>Next</b>.
-    </p>
-
-    <p class="SubStepAlpha">
-      f.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Choose<span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">your</span><span style="letter-spacing: -0.35pt"> </span>desired<span style="letter-spacing: -0.35pt">
-      </span>shortcut<span style="letter-spacing: -0.35pt"> </span>options<span style="letter-spacing: -0.15pt">
-      </span>and<span style="letter-spacing: -0.35pt"> </span><span style="letter-spacing: -0.05pt">click</span><span style="letter-spacing: -0.1pt"> </span><b>Next</b>.
-    </p>
-
-    <p class="SubStepAlpha">
-      g.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="letter-spacing: -0.05pt">You</span><span style="letter-spacing: -0.3pt"> </span>can<span style="letter-spacing: -0.3pt">
-      </span>change<span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">the</span><span style="letter-spacing: -0.2pt"> </span>installation<span style="letter-spacing: -0.25pt">
-      </span>location<span style="letter-spacing: -0.25pt"> </span>of<span style="letter-spacing: -0.45pt">
-      </span>Wireshark,<span style="letter-spacing: -0.35pt"> </span><span style="letter-spacing: -0.05pt">but</span><span style="letter-spacing: 0.1pt"> </span>unless<span style="letter-spacing: -0.15pt">
-      </span><span style="letter-spacing: -0.05pt">you</span><span style="letter-spacing: -0.25pt"> </span><span style="letter-spacing: -0.05pt">have</span><span style="letter-spacing: -0.1pt"> </span>limited<span style="letter-spacing: -0.3pt">
-      </span><span style="letter-spacing: -0.05pt">disk</span><span style="letter-spacing: -0.1pt"> </span>space,<span style="letter-spacing: -0.25pt">
-      </span><span style="letter-spacing: -0.05pt">it</span><span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.05pt">is</span><span style="letter-spacing: 2.45pt"> </span>recommended<span style="letter-spacing: -0.4pt">
-      </span>that<span style="letter-spacing: -0.2pt"> </span><span style="letter-spacing: -0.1pt">you</span><span style="letter-spacing: -0.2pt"> </span>keep<span style="letter-spacing: -0.35pt">
-      </span><span style="letter-spacing: -0.05pt">the</span><span style="letter-spacing: -0.3pt"> </span>default<span style="letter-spacing: -0.35pt">
-      </span><span style="letter-spacing: -0.05pt">location.</span>
-    </p>
-
-    <p class="SubStepAlpha">
-      h.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span>To capture live network data, Npcap
-      must be installed on your PC. If
-      your installed version of Npcap is older than the version that comes
-      with Wireshark, it is recommended that you allow the newer version to be
-      installed<span style="letter-spacing: -0.25pt"> </span><span style="letter-spacing: 0.05pt">by</span><span style="letter-spacing: 3pt"> </span>clicking<span style="letter-spacing: -0.4pt">
-      </span>the<span style="letter-spacing: -0.25pt"> </span><b>Install<span style="letter-spacing: -0.35pt">
-        </span>Npcap<span style="letter-spacing: -0.35pt">
-        </span>x.x.x<span style="letter-spacing: -0.2pt"> </span></b>(version<span style="letter-spacing: -0.4pt">
-      </span>number)<span style="letter-spacing: -0.2pt">
-      </span>check<span style="letter-spacing: -0.2pt"> </span>box. Click
-      <b>Next</b>.
-    </p>
-
-    <p class="SubStepAlpha">
-      i.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A separate window opens up for
-      Npcap Setup. Click <b>I Agree</b> to in
-      the Npcap License Agreement window. In the Installation Options window,
-      leave all the checkboxes unselected and click <b>Install</b> to install
-      Npcap. Click <b>Next</b> when finished. Click <b>Finish</b> to close the
-      wizard.
-    </p>
-
-    <p class="SubStepAlpha">
-      j.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>The installation of USBPcap is
-      not necessary for this course. It is
-      only required if you are planning to capture USB traffic. Click<i> </i><b>Install</b> to start the installation.
-    </p>
-
-    <p class="BodyTextL50">
-      <b>Note</b>:
-      <b>Because USBPcap is experimental, make sure that you have created a
-        system restore point before the installation of USBPcap.</b>
-    </p>
-
-    <p class="SubStepAlpha" style="line-height: 11.45pt">
-      k.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="letter-spacing: -0.05pt">Wireshark</span><span style="letter-spacing: -0.15pt"> </span>starts<span style="letter-spacing: -0.25pt">
-      </span><span style="letter-spacing: -0.05pt">installing</span><span style="letter-spacing: -0.2pt">
-      </span>its<span style="letter-spacing: -0.3pt">
-      </span>files<span style="letter-spacing: -0.25pt"> </span><span style="letter-spacing: -0.05pt">and</span><span style="letter-spacing: -0.2pt"> </span>a<span style="letter-spacing: -0.3pt">
-      </span>separate<span style="letter-spacing: -0.2pt"> </span>window<span style="letter-spacing: -0.35pt">
-      </span><span style="letter-spacing: -0.05pt">displays</span><span style="letter-spacing: -0.15pt"> </span><span style="letter-spacing: -0.05pt">with</span><span style="letter-spacing: -0.25pt"> </span>the<span style="letter-spacing: -0.3pt">
-      </span>status<span style="letter-spacing: -0.2pt"> </span>of<span style="letter-spacing: -0.2pt">
-      </span><span style="letter-spacing: -0.05pt">the</span><span style="letter-spacing: -0.3pt">
-      </span>installation.<span style="letter-spacing: -0.3pt">
-      </span>Click <b>Next<span style="letter-spacing: -0.25pt"> </span></b><span style="letter-spacing: -0.05pt">when</span><span style="letter-spacing: -0.35pt"> </span>the<span style="letter-spacing: -0.25pt">
-      </span>installation<span style="letter-spacing: -0.35pt"> </span>is<span style="letter-spacing: -0.3pt">
-      </span><span style="letter-spacing: -0.05pt">complete.</span>
-    </p>
-
-    <p class="SubStepAlpha">
-      l.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="letter-spacing: -0.05pt">Click</span><span style="letter-spacing: -0.2pt"> </span><b>Finish<span style="letter-spacing: -0.35pt"> </span></b>to<span style="letter-spacing: -0.35pt">
-      </span>complete<span style="letter-spacing: -0.35pt"> </span><span style="letter-spacing: 0.05pt">the</span><span style="letter-spacing: -0.6pt"> </span>Wireshark<span style="letter-spacing: -0.2pt">
-      </span><span style="letter-spacing: -0.05pt">install</span><span style="letter-spacing: -0.4pt"> </span>process.
-      If the
-      installation process is stalled, verify that the Npcap installation is
-      finished. Click <b>Next</b> to continue.
-    </p>
-
-    <p class="SubStepAlpha">
-      m.<span style="font: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp; </span>Reboot
-      the PC to finish the installation.
-    </p>
-
-    <h2 style="margin-left: 0in; text-indent: 0in">
-      Part 2: Capture<span style="letter-spacing: 0.05pt"> </span>and<span style="letter-spacing: 0.1pt">
+      Part 1: Capture<span style="letter-spacing: 0.05pt"> </span>and<span style="letter-spacing: 0.1pt">
       </span><span style="letter-spacing: -0.1pt">Analyze</span><span style="letter-spacing: 0.05pt"> </span>Local<span style="letter-spacing: 0.2pt">
       </span><span style="letter-spacing: -0.15pt">ARP</span><span style="letter-spacing: 0.1pt"> </span>Data<span style="letter-spacing: 0.05pt">
       </span>in<span style="letter-spacing: -0.15pt"> </span>Wireshark
@@ -1854,7 +1594,7 @@
 
     <p class="BodyTextL25">
       In<span style="letter-spacing: -0.25pt"> </span>Part<span style="letter-spacing: -0.25pt">
-      </span>2<span style="letter-spacing: -0.2pt"> </span>of<span style="letter-spacing: -0.15pt">
+      </span>1<span style="letter-spacing: -0.2pt"> </span>of<span style="letter-spacing: -0.15pt">
       </span><span style="letter-spacing: -0.05pt">this</span><span style="letter-spacing: -0.2pt"> </span>lab,<span style="letter-spacing: 0.05pt">
       </span><span style="letter-spacing: -0.05pt">you</span><span style="letter-spacing: -0.15pt"> </span><span style="letter-spacing: -0.05pt">will</span><span style="letter-spacing: -0.1pt"> </span><span style="letter-spacing: -0.05pt">ping</span><span style="letter-spacing: -0.25pt"> </span>another<span style="letter-spacing: -0.25pt">
       </span>PC<span style="letter-spacing: -0.15pt"> </span>on<span style="letter-spacing: -0.2pt">
@@ -2113,7 +1853,7 @@
       </span>the<span style="letter-spacing: -0.25pt"> </span>default<span style="letter-spacing: -0.2pt">
       </span>gateway<span style="letter-spacing: 3.2pt"> </span>address<span style="letter-spacing: -0.25pt">
       </span>that<span style="letter-spacing: -0.15pt"> </span>was identified Part
-      2, Step 1.
+      1, Step 1.
     </p>
 
     <p class="CMD">C:\Users\Student&gt; <b>ping 192.168.1.1</b></p>
@@ -2551,7 +2291,7 @@
     </p>
 
     <h2 style="margin-left: 0in; text-indent: 0in">
-      Part 3: Examine<span style="letter-spacing: -0.1pt"> the</span><span style="letter-spacing: 0.15pt"> </span><span style="letter-spacing: -0.15pt">ARP</span><span style="letter-spacing: 0.05pt"> </span>cache<span style="letter-spacing: 0.05pt">
+      Part 2: Examine<span style="letter-spacing: -0.1pt"> the</span><span style="letter-spacing: 0.15pt"> </span><span style="letter-spacing: -0.15pt">ARP</span><span style="letter-spacing: 0.05pt"> </span>cache<span style="letter-spacing: 0.05pt">
       </span>entries<span style="letter-spacing: -0.1pt"> </span>on the<span style="letter-spacing: -0.1pt">
       </span>PC.
     </h2>
@@ -2944,20 +2684,6 @@
         Clear My Responses
       </button>
     </div>
-
-    <div id="footerDIV">
-      <span><br>
-        <hr>
-        <span style="
-              padding-right: 5px;
-              float: left;
-              font-family: arial;
-              font-size: 12px;
-            ">© 2017 - 2022 Cisco and/or its affiliates. All rights reserved.
-          Cisco Public </span><br>
-      </span>
-    </div>
-  </div>
 
 <script>
   window.addEventListener("load", function () {
