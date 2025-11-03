@@ -9,7 +9,7 @@
 
 ---
 
-## ЩО Е ТО ACCESS CONTROL LIST (ACL)? 🎓
+## ЩО Е ТО ACCESS CONTROL LIST (ACL)? 
 
 ### Основна концепция
 
@@ -1483,4 +1483,10 @@ show port-security address
 
 ---
 
-**Успех! ACL-ите са мощен инструмент за мрежова сигурност! 🔒**
+**Успех! ACL-ите са мощен инструмент за мрежова сигурност! **
+
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
