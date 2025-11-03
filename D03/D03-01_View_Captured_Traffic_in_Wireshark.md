@@ -4,9 +4,16 @@
 
 ![Топология](wireshark_screenshots/6-04_img_1.png)
 
-| ![Топология](wireshark_screenshots/6-M4_img_1.png) |
+|![Топология](wireshark_screenshots/6-M4_img_1.png)|
 |:--:|
-| *Топология* |
+
+<div style="text-align: center;">
+    <img src="wireshark_screenshots/6-M4_img_1.png" alt="Топология" />
+</div>
+
+<figure align="center">
+    <img src="wireshark_screenshots/6-M4_img_1.png" alt="Топология">
+</figure>
 
 ## Цели на упражнението
 
