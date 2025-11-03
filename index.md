@@ -431,7 +431,6 @@ Edit → Preferences → Protocols → TCP → ☐ Validate checksums
 
 **Забележка:** За пълна информация вижте [README.md](D03/README.md)
 
-{% include analytics.html %}
 
 ## 📞 Контакти
 
