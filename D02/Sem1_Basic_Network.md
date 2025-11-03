@@ -1328,4 +1328,7 @@ show arp                            ← ARP таблица
 
 **Успех! **
 
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+        
 {% include analytics.html %}
