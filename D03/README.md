@@ -400,3 +400,9 @@ A: Да! Просто адаптирайте командите:
 **Успех с изучаването на Wireshark и network анализ!** 
 
 *"The best way to learn networking is to see it in action."*
+
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
