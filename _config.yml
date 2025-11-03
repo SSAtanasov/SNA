@@ -1,19 +1,9 @@
 # GitHub Pages Configuration
-title: "Системно и мрежово администриране"
-description: "Учебни материали"
 
-# Disable theme to use custom layout
-theme: null
+# Remove the site title completely
+title: ""
+show_downloads: false
 
-# Jekyll settings
-markdown: kramdown
-kramdown:
-  input: GFM
-  hard_wrap: false
-  parse_block_html: true
+# Optional: Change theme if needed
 
-# Exclude files
-exclude:
-  - README.md
-  - Gemfile
-  - Gemfile.lock
+# theme: jekyll-theme-minimal
