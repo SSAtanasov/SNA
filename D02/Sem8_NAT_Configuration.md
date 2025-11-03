@@ -578,3 +578,9 @@ ip nat inside source static tcp 192.168.10.50 80 203.0.113.1 8080
 ---
 
 **Готово! Запази .pkt файла като `Sem8_NAT_Configuration.pkt`**
+
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
