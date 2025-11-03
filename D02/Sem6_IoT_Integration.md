@@ -532,3 +532,9 @@ elif temperature < 22:
 **Успех! **
 
 **Запазете файла като:** `Sem6_IoT_YourName.pkt`
+
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
