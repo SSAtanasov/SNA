@@ -491,3 +491,9 @@ IPv4 header съдържа критична информация за маршр
 - **Flags** - може ли да се фрагментира
 
 Тези знания са основа за troubleshooting и network анализ!
+
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
