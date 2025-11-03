@@ -439,3 +439,8 @@ ip dhcp pool ADMIN_POOL
 - Security policies
 
 **Запазете файла като:** `Sem4_DNS_YourName.pkt`
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
