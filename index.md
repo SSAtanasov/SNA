@@ -1,7 +1,3 @@
----
-layout: default
----
-
 # Системно и мрежово администриране D02
 
 **Преподавател:** гл. ас. Светослав Атанасов  
@@ -448,3 +444,9 @@ Edit → Preferences → Protocols → TCP → ☐ Validate checksums
 **Успех с курса!**
 
 *Последна актуализация: Октомври 2025*
+
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+{% include analytics.html %}
