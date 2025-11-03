@@ -4,10 +4,6 @@
 
 ![Топология](wireshark_screenshots/6-04_img_1.png)
 
-<p align="center">
-  <img src="wireshark_screenshots/6-M4_img_1.png" alt="Топология">
-</p>
-
 ## Цели на упражнението
 
 ### Част 2: Прихващане и анализ на локални ARP данни във Wireshark
