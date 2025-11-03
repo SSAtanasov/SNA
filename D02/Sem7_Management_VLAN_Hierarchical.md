@@ -601,3 +601,9 @@ spanning-tree vlan 1-4094 priority 4096
 ---
 
 **Готово! Запази .pkt файла като `Sem7_Management_VLAN_Hierarchical.pkt`**
+
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
