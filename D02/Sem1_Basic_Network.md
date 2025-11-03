@@ -1,7 +1,3 @@
----
-layout: default
----
-
 # SEM 1: ОСНОВНА МРЕЖОВА ТОПОЛОГИЯ
 ## Oснови на IOS; Базова конфигурация на Switch и Router
 
@@ -1331,3 +1327,5 @@ show arp                            ← ARP таблица
 ---
 
 **Успех! **
+
+{% include analytics.html %}
