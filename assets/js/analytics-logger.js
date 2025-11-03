@@ -1,6 +1,6 @@
 (function() {
   // ⚠️ ЗАМЕНИ С ТВОЯ URL ОТ СТЪПКА 3.4!
-  const SCRIPT_URL = 'https://script.google.com/macros/s/ТВОЯ_SCRIPT_ID/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwwst6P-T15ONyZ9PWUtSjH8ydRDdPSyYc325d6dmRxqvs9AluKe-c21VuNYgt3LMxt/exec';
   
   // Не логвай от localhost или preview
   if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
