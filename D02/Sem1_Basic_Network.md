@@ -1330,3 +1330,5 @@ show arp                            ← ARP таблица
 
 <script data-goatcounter="https://satanasov.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
