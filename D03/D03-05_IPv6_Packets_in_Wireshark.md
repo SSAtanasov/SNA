@@ -610,3 +610,9 @@ IPv6 е бъдещето на Internet комуникацията. Ключов�
 - **Три основни типа адреси:** Global Unicast, Link-Local, Multicast
 
 Познаването на IPv6 е essential за съвременните network engineers!
+
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
