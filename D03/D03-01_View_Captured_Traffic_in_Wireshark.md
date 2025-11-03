@@ -205,6 +205,12 @@ _Ако destination IPv4 адресът е в различна мрежа, sourc
 
 ---
 
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
+
 ## Заключение
 
 В това упражнение научихме как да използваме Wireshark за заснемане и анализ на ARP трафик в локалната мрежа. Разбрахме как ARP протоколът работи за картографиране на IP адреси към MAC адреси, и как компютрите кешират тази информация за по-ефективна комуникация. Wireshark е мощен инструмент за дълбок анализ на мрежови протоколи и разбиране на техните механизми.
