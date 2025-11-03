@@ -416,6 +416,9 @@ Edit → Preferences → Protocols → TCP → ☐ Validate checksums
 
 ---
 
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
 ## Успех!
 
 Когато завършите всички 5 урока, ще имате **solid foundation** в:
