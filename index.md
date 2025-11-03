@@ -111,11 +111,11 @@ Lab 8: NAT
 
 | # | Урок | Време | Формат | Теми |
 |---|------|-------|--------|------|
-| 1 | [Преглед на заснет трафик](Urok_01_View_Captured_Traffic_in_Wireshark.md) | 45 мин | ✅ Практически | ARP, ping, arp -a |
-| 2 | [Ethernet рамки](Urok_02_Examine_Ethernet_Frames.md) | 40 мин | ✅ Практически | MAC адреси, OUI, Ethernet II |
-| 3 | [IPv4 пакети](Urok_03_IPv4_Packets_in_Wireshark.md) | 50 мин | ✅ Практически | TTL, Protocol field, tracert |
-| 4 | [IPv6 пакети](Urok_04_IPv6_Packets_in_Wireshark.md) | 50 мин | ✅ Практически | IPv6 headers, ICMPv6, NDP |
-| 5 | [TCP комуникация](Urok_05_TCP_Communication_Process.md) | 60 мин | ✅ Практически | Three-Way Handshake, Flags |
+| 1 | [Преглед на заснет трафик](D03/Urok_01_View_Captured_Traffic_in_Wireshark.md) | 45 мин | ✅ Практически | ARP, ping, arp -a |
+| 2 | [Ethernet рамки](D03/Urok_02_Examine_Ethernet_Frames.md) | 40 мин | ✅ Практически | MAC адреси, OUI, Ethernet II |
+| 3 | [IPv4 пакети](D03/Urok_03_IPv4_Packets_in_Wireshark.md) | 50 мин | ✅ Практически | TTL, Protocol field, tracert |
+| 4 | [IPv6 пакети](D03/Urok_04_IPv6_Packets_in_Wireshark.md) | 50 мин | ✅ Практически | IPv6 headers, ICMPv6, NDP |
+| 5 | [TCP комуникация](D03/Urok_05_TCP_Communication_Process.md) | 60 мин | ✅ Практически | Three-Way Handshake, Flags |
 
 **Общо време:** ~4 часа за всички уроци
 
@@ -429,7 +429,7 @@ Edit → Preferences → Protocols → TCP → ☐ Validate checksums
 
 ---
 
-**Забележка:** За пълна информация вижте [README.md](README.md)
+**Забележка:** За пълна информация вижте [README.md](D03/README.md)
 
 
 ## 📞 Контакти
