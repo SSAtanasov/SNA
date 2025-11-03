@@ -7,42 +7,42 @@
 
 ## 🧪 Семинарни упражнения (8 лаба)
 
-#### [Lab 1: Основна мрежова топология](D02/Lab1_Basic_Network.md)
+#### [Sem 1: Основна мрежова топология](D02/Sem1_Basic_Network.md)
 ⏱️ **60-90 минути**
 
 **Теми:** Базова конфигурация на Router и Switch • IP адресиране • Hostname • Connectivity testing
 
 ---
 
-#### [Lab 2: VLAN конфигурация и Inter-VLAN Routing](D02/Lab2_VLANs_InterVLAN.md)
+#### [Sem 2: VLAN конфигурация и Inter-VLAN Routing](D02/Sem2_VLANs_InterVLAN.md)
 ⏱️ **90-120 минути**
 
 **Теми:** Създаване на VLAN-и • Trunk портове • Router-on-a-Stick • Inter-VLAN routing
 
 ---
 
-#### [Lab 3: DHCP конфигурация](D02/Lab3_DHCP.md)
+#### [Sem 3: DHCP конфигурация](D02/Sem3_DHCP.md)
 ⏱️ **60-90 минути**
 
 **Теми:** DHCP pools • Excluded addresses • DHCP за множество VLAN-и • Lease time
 
 ---
 
-#### [Lab 4: DNS конфигурация](D02/Lab4_DNS.md)
+#### [Sem 4: DNS конфигурация](D02/Sem4_DNS.md)
 ⏱️ **60-75 минути**
 
 **Теми:** DNS Server настройка • A records • CNAME records • Name resolution • Интеграция с DHCP
 
 ---
 
-#### [Lab 5: Access Control Lists (ACL)](D02/Lab5_ACL.md)
+#### [Sem 5: Access Control Lists (ACL)](D02/Sem5_ACL.md)
 ⏱️ **90-120 минути**
 
 **Теми:** Standard ACL • Extended ACL • SSH конфигурация • Port Security • Wildcard masks
 
 ---
 
-#### [Lab 6: IoT интеграция и автоматизация](D02/Lab6_IoT_Integration.md)
+#### [Sem 6: IoT интеграция и автоматизация](D02/Sem6_IoT_Integration.md)
 ⏱️ **90-120 минути**
 
 **Теми:** IoT Gateway • Сензори и актуатори • Blockly programming • Автоматизация
@@ -51,14 +51,14 @@
 
 ### Разширени лабове (7-9)
 
-#### [Lab 7: Management VLAN и йерархична топология](D02/Lab7_Management_VLAN_Hierarchical.md)
+#### [Sem 7: Management VLAN и йерархична топология](D02/Sem7_Management_VLAN_Hierarchical.md)
 ⏱️ **90-120 минути**
 
 **Теми:** Management VLAN (не VLAN 1) • Йерархична топология (Access/Distribution/Core) • Multi-tier design • SSH
 
 ---
 
-#### [Lab 8: NAT конфигурация](D02/Lab8_NAT_Configuration.md)
+#### [Sem 8: NAT конфигурация](D02/Sem8_NAT_Configuration.md)
 ⏱️ **75-90 минути**
 
 **Теми:** Static NAT • Dynamic NAT • PAT (NAT Overload) • Симулиране на интернет • Troubleshooting
@@ -69,21 +69,21 @@
 ## 📊 Прогресия на знанията
 
 ```
-Lab 1: Основи
+Sem 1: Основи
    ↓
-Lab 2: VLAN-и
+Sem 2: VLAN-и
    ↓
-Lab 3: DHCP
+Sem 3: DHCP
    ↓
-Lab 4: DNS
+Sem 4: DNS
    ↓
-Lab 5: Сигурност
+Sem 5: Сигурност
    ↓
-Lab 6: IoT
+Sem 6: IoT
    ↓
-Lab 7: Enterprise дизайн
+Sem 7: Enterprise дизайн
    ↓
-Lab 8: NAT
+Sem 8: NAT
 ---
 
 ## 🛠️ Изисквания
