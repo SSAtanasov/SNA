@@ -443,6 +443,3 @@ Edit → Preferences → Protocols → TCP → ☐ Validate checksums
 **Успех с курса!**
 
 *Последна актуализация: Октомври 2025*
-
-<script data-goatcounter="https://satanasov.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
