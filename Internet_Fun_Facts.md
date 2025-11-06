@@ -66,7 +66,7 @@
 ## 🧠 AI и AGI - Къде сме днес?
 
 ### AI vs AGI - Разликата
-**AI (Artificial Intelligence) - Узка интелигентност:**
+**AI (Artificial Intelligence) - Тясна (Narrow) интелигентност:**
 - ChatGPT: Отличен в текст, безполезен в шах
 - AlphaGo: Непобедим в Go, не може да си поръча пица
 - Tesla Autopilot: Шофира добре, не може да ти обясни защо
@@ -299,3 +299,10 @@
 **Край на забавленията - Back to serious networking!** 🌐🔧
 
 *"The best thing about a boolean is even if you are wrong, you are only off by a bit."*
+
+
+<script data-goatcounter="https://satanasov.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script src="/SNA/assets/js/analytics-logger.js"></script>
+
