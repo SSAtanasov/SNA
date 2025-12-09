@@ -85,7 +85,7 @@
 
 ---
 
-## ЩО Е ТО SUBINTERFACE? 🔌
+## ЩО Е ТО SUBINTERFACE?
 
 ### Проблемът без subinterfaces:
 
@@ -133,7 +133,7 @@ VLAN 30 → Router порт 3
 
 ---
 
-## ЩО Е ТО TRUNK? 
+## ЩО Е ТО TRUNK?
 
 ### Access vs Trunk портове
 
@@ -1044,7 +1044,7 @@ SW1(config-if-range)# shutdown
 - DHCP Relay Agent
 - IP Helper address
 
-**Запазете файла като:** `Lab2_VLANs_YourName.pkt`
+**Запазете файла като:** `Sem2_VLANs_YourName.pkt`
 
 ---
 
@@ -1093,7 +1093,12 @@ interface GigE0/0.99
 
 ---
 
-**Успех! **
+**Успех със семинара!**
+
+
+**гл. ас. Светослав Атанасов**  
+svetoslav.atanasov@trakia-uni.bg
+
 
 <script data-goatcounter="https://satanasov.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>

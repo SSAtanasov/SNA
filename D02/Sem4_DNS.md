@@ -1,7 +1,7 @@
 # SEM 4: DNS КОНФИГУРАЦИЯ
 ## Domain Name System - Name Resolution
 
-**Цел:** Да се научите да конфигурирате DNS сървър в Packet Tracer и да разберете как работи name resolution.
+**Цел:** Да се научите да конфигурирате DNS сървър и да разберете как работи преобразуването име → IP адрес.
 
 **Продължителност:** 60-75 минути
 
@@ -9,33 +9,176 @@
 
 ---
 
-## ЧАСТ 1: Разширяване на топологията (15 мин)
+## ЧАСТ 1: Какво е DNS? (Теория - 10 мин)
 
-### Добавяне на DNS Server
+### Проблем без DNS:
 
-**Нова топология:**
+```
+Искате да отворите www.google.com
+
+❌ Трябва да помните: 142.250.185.206
+❌ За Facebook: 157.240.241.35
+❌ За YouTube: 142.250.185.78
+❌ За всеки сайт - различен IP адрес!
+
+Невъзможно е да запомните стотици IP адреси! 
+```
+
+### Решение с DNS:
+
+```
+✅ Пишете: www.google.com
+✅ DNS превежда → 142.250.185.206
+✅ Browser се свързва с IP адреса
+
+Вие помните ИМЕНА, DNS помни IP АДРЕСИТЕ! 
+```
+
+### Аналогия: DNS е телефонен указател
+
+```
+┌─────────────────────────────────┐
+│   ТЕЛЕФОНЕН УКАЗАТЕЛ            │
+├─────────────────────────────────┤
+│ Иван Петров    → 0888 123 456  │
+│ Мария Георгиева → 0899 987 654  │
+│ Пицария "Вкусно"→ 02 123 4567   │
+└─────────────────────────────────┘
+
+┌─────────────────────────────────┐
+│   DNS SERVER                    │
+├─────────────────────────────────┤
+│ www.google.com → 142.250.185.206│
+│ web.company.local → 192.168.10.3│
+│ server.company.local → 192.168.10.2│
+└─────────────────────────────────┘
+```
+
+Вместо да помните номера, търсите по име!
+
+---
+
+### Как работи DNS? (Опростен процес)
+
+```
+Стъпка 1: Потребител пише име
+┌─────────┐
+│  PC1    │  "Искам да отворя www.company.local"
+└────┬────┘
+     │
+     │
+Стъпка 2: PC проверява локален кеш
+     │  "Имам ли запазен IP за това име?"
+     │  Не → Продължава към Стъпка 3
+     │
+     │
+Стъпка 3: PC пита DNS Server
+     │  "Какъв е IP адресът на www.company.local?"
+     │
+     ↓
+┌─────────┐
+│DNS Server│
+└────┬────┘
+     │
+     │
+Стъпка 4: DNS Server отговаря
+     │  "www.company.local е 192.168.10.3"
+     │
+     ↓
+┌─────────┐
+│  PC1    │  Сега зная IP-то! Свързвам се...
+└─────────┘
+```
+
+---
+
+### Типове DNS записи
+
+DNS използва различни типове записи за различни цели:
+
+| Тип | Име | Какво прави | Пример |
+|-----|-----|-------------|--------|
+| **A** | Address | Име → IPv4 адрес | `web.company.local` → `192.168.10.3` |
+| **AAAA** | IPv6 Address | Име → IPv6 адрес | `web.company.local` → `2001:db8::1` |
+| **CNAME** | Canonical Name | Псевдоним → Друго име | `www.company.local` → `web.company.local` |
+| **MX** | Mail Exchange | Mail сървър за домейна | `company.local` → `mail.company.local` |
+| **NS** | Name Server | DNS сървърът на домейна | `company.local` → `ns1.company.local` |
+| **PTR** | Pointer | IP → Име (обратно) | `192.168.10.3` → `web.company.local` |
+
+### Най-важните за нашия Sem:
+
+**A Record (Address):**
+```
+server.company.local  →  192.168.10.2
+```
+Директна връзка: **име** → **IP адрес**
+
+**CNAME Record (Alias):**
+```
+www.company.local  →  web.company.local  →  192.168.10.3
+      ↓                      ↓
+  псевдоним          реално име (A record)
+```
+CNAME сочи към ДРУГО ИМЕ, което има A record.
+
+---
+
+### TTL (Time To Live)
+
+**TTL** = Колко време да се пази записът в кеша
+
+```
+Пример: TTL = 3600 секунди (1 час)
+
+1. PC пита DNS за www.company.local
+2. DNS отговаря: "192.168.10.3" (TTL: 3600)
+3. PC запазва в кеша си за 1 час
+4. Следващите заявки → Използва кеша
+5. След 1 час → Пита DNS отново
+```
+
+**Типични стойности:**
+- 3600 секунди (1 час) - стандартно за нашия Sem
+- 86400 секунди (1 ден) - стабилни записи
+
+---
+
+## ЧАСТ 2: Топология (5 мин)
+
+### Разширяване на топологията
+
+Добавяме DNS Server към нашата мрежа:
+
 ```
               [Router R1]
                    |
             GigE0/0 (trunk)
                    |
               [Switch SW1]
-         /     |     |     \     \
-      Fa0/1 Fa0/2 Fa0/3 Fa0/4 Fa0/5
-        |     |     |     |     |
-    [Server] [PC1] [PC2] [PC3] [PC4]
-     DNS    Admin Admin  IT    IT
+       /       |     |     |     \     \     \
+   Fa0/11  Fa0/6 Fa0/2 Fa0/3 Fa0/4 Fa0/5 Fa0/7
+      |       |     |     |     |     |     |
+  [Server] [Server][PC1] [PC2] [PC3] [PC4] (празен)
+  DNS(10.2) File   Admin Admin  IT    IT
+           (10.50)
+           от Sem3
 ```
 
-### Устройства:
-- Добавете 1x Server-PT (за DNS)
-- Свържете го към SW1 на порт Fa0/11
+**VLAN-и:**
+- VLAN 10: Administration (192.168.10.0/24)
+- VLAN 20: IT Department (192.168.20.0/24)
+
+**Устройства:**
+- DNS Server (нов): 192.168.10.2
+- File Server (от Sem 3): 192.168.10.50
+- Web Server (в ЧАСТ 7): 192.168.10.3 (ще го добавим)
 
 ---
 
-## ЧАСТ 2: Конфигурация на Switch (10 мин)
+## ЧАСТ 3: Конфигурация на Switch (5 мин)
 
 ### Назначаване на порта към VLAN
+
 ```cisco
 SW1# configure terminal
 SW1(config)# interface FastEthernet0/11
@@ -45,15 +188,17 @@ SW1(config-if)# description DNS-Server
 SW1(config-if)# exit
 ```
 
-**Защо VLAN 10?** Сървърите обикновено са в администраторски VLAN.
+**Защо VLAN 10?** 
+Сървърите обикновено са в администраторски VLAN за по-добра сигурност и управление.
 
 ---
 
-## ЧАСТ 3: Конфигурация на DNS Server (20 мин)
+## ЧАСТ 4: Конфигурация на DNS Server (20 мин)
 
 ### Стъпка 1: IP конфигурация на сървъра
 
-**Кликнете на Server → Desktop → IP Configuration:**
+**Кликнете: Server → Desktop → IP Configuration**
+
 ```
 IP Address: 192.168.10.2
 Subnet Mask: 255.255.255.0
@@ -61,49 +206,64 @@ Default Gateway: 192.168.10.1
 DNS Server: 127.0.0.1  (посочва към себе си)
 ```
 
+**Защо DNS = 127.0.0.1?**
+- 127.0.0.1 = localhost (самия сървър)
+- DNS Server използва себе си за name resolution
+
 ### Стъпка 2: Активиране на DNS Service
 
-**Кликнете на Server → Services → DNS:**
+**Кликнете: Server → Services → DNS**
 
-1. Уверете се че DNS Service е **ON**
+1. Уверете се че **DNS Service е ON**
 2. Ще видите празна таблица с DNS records
 
-### Стъпка 3: Добавяне на DNS records
+### Стъпка 3: Добавяне на A records
 
-**Add следните A records:**
+**A Record** = Име → IP адрес
 
-| Name              | Type | Address       | TTL  |
-|-------------------|------|---------------|------|
-| server.company.local | A    | 192.168.10.2  | 3600 |
-| router.company.local | A    | 192.168.10.1  | 3600 |
-| switch.company.local | A    | 192.168.99.2  | 3600 |
-| web.company.local    | A    | 192.168.10.3  | 3600 |
-| ftp.company.local    | A    | 192.168.10.4  | 3600 |
-| pc1.company.local    | A    | 192.168.10.11 | 3600 |
-| pc2.company.local    | A    | 192.168.10.12 | 3600 |
+**Добавете следните записи:**
+
+| Name | Type | Address | TTL |
+|------|------|---------|-----|
+| server.company.local | A | 192.168.10.2 | 3600 |
+| router.company.local | A | 192.168.10.1 | 3600 |
+| switch.company.local | A | 192.168.99.2 | 3600 |
+| web.company.local | A | 192.168.10.3 | 3600 |
+| pc1.company.local | A | 192.168.10.11 | 3600 |
+| pc2.company.local | A | 192.168.10.12 | 3600 |
 
 **Как се добавят:**
-1. В полето "Name" напишете: `server.company.local`
-2. Type: A Record (по default)
+1. Name: `server.company.local`
+2. Type: **A Record** (по подразбиране)
 3. Address: `192.168.10.2`
-4. Кликнете **Add**
-5. Повторете за всички записи
+4. TTL: `3600`
+5. Кликнете **Add**
+6. Повторете за всички
 
 ### Стъпка 4: Добавяне на CNAME records (Aliases)
 
-| Name              | Type  | Address              | TTL  |
-|-------------------|-------|----------------------|------|
-| www.company.local | CNAME | web.company.local    | 3600 |
-| mail.company.local| CNAME | server.company.local | 3600 |
+**CNAME Record** = Псевдоним → Друго име
+
+| Name | Type | Address | TTL |
+|------|------|---------|-----|
+| www.company.local | CNAME | web.company.local | 3600 |
+| mail.company.local | CNAME | server.company.local | 3600 |
 | dns.company.local | CNAME | server.company.local | 3600 |
 
-**CNAME = Canonical Name (псевдоним)**
+**Обяснение:**
+```
+www.company.local → web.company.local → 192.168.10.3
+      ↓                    ↓
+   CNAME               A Record
+```
 
 ---
 
-## ЧАСТ 4: Обновяване на DHCP за DNS (10 мин)
+## ЧАСТ 5: Обновяване на DHCP (10 мин)
 
-### Промяна на DHCP pools да сочат към DNS сървъра
+### Промяна на DHCP да сочи към DNS сървъра
+
+**Защо?** PC-тата автоматично да получават DNS Server адрес.
 
 ```cisco
 R1# configure terminal
@@ -138,7 +298,7 @@ DNS Server: 192.168.10.2
 
 ---
 
-## ЧАСТ 5: Тестване на DNS Resolution (15 мин)
+## ЧАСТ 6: Тестване на DNS (15 мин)
 
 ### Test 1: Ping по име (вместо IP)
 
@@ -151,19 +311,14 @@ ping server.company.local
 ```
 Pinging server.company.local [192.168.10.2] with 32 bytes of data:
 Reply from 192.168.10.2: bytes=32 time<1ms TTL=128
+Reply from 192.168.10.2: bytes=32 time<1ms TTL=128
 ```
 
-### Test 2: Ping CNAME record
-```
-ping www.company.local
-```
+✅ Виждате IP адреса в скоби → DNS работи!
 
-**Какво се случва:**
-```
-www.company.local → (CNAME) → web.company.local → (A) → 192.168.10.3
-```
+### Test 2: nslookup команда
 
-### Test 3: nslookup команда
+**nslookup** = Name Server Lookup (проверка на DNS)
 
 **От PC (Command Prompt):**
 ```
@@ -179,105 +334,169 @@ Name: server.company.local
 Address: 192.168.10.2
 ```
 
-### Test 4: Reverse DNS lookup (опционално)
+**Обяснение:**
+- **Server:** Кой DNS server отговори
+- **Name:** Името което търсихме
+- **Address:** IP адресът на името
+
+### Test 3: CNAME resolution
+
 ```
-nslookup 192.168.10.2
-```
-
-### Test 5: nslookup с конкретен DNS server
-```
-nslookup router.company.local 192.168.10.2
-```
-
----
-
-## ЧАСТ 6: DNS на Router (като DNS Forwarder)
-
-### Концепция:
-Router може да действа като DNS proxy/forwarder за клиентите.
-
-### Конфигурация (BONUS):
-```cisco
-R1(config)# ip dns server
-R1(config)# ip domain-lookup
-R1(config)# ip name-server 192.168.10.2
-!
-R1(config)# ip host router.company.local 192.168.10.1
-R1(config)# ip host switch.company.local 192.168.99.2
+nslookup www.company.local
 ```
 
-**Какво прави:**
-- Router приема DNS queries от клиентите
-- Проверява локалните `ip host` записи
-- Ако не намери, форвардва към 192.168.10.2
+**Очакван изход:**
+```
+Server: 192.168.10.2
+Address: 192.168.10.2
+
+Name: web.company.local
+Address: 192.168.10.3
+Aliases: www.company.local
+```
+
+**Обяснение на процеса:**
+```
+1. Търсим: www.company.local
+2. DNS намира: CNAME → web.company.local
+3. Търси A record за: web.company.local
+4. Намира: 192.168.10.3
+5. Връща: 192.168.10.3 (Alias: www.company.local)
+```
+
+### Test 4: Тестване на несъществуващо име
+
+```
+ping fake.company.local
+```
+
+**Очакван резултат:**
+```
+Ping request could not find host fake.company.local.
+```
+
+❌ DNS не може да намери това име → грешка
 
 ---
 
 ## ЧАСТ 7: Добавяне на Web Server (BONUS - 15 мин)
 
-### Стъпка 1: Добавете Server за Web
+**Забележка:** Това е НОВ сървър (не File Server-ът от Sem 3).
 
-**Добавете още 1 Server-PT:**
+### Стъпка 1: Добавете Web Server
+
+**Устройство:**
+- 1x Server-PT (НОВ!)
+- Име: Web Server
 - IP: 192.168.10.3
 - Subnet: 255.255.255.0
 - Gateway: 192.168.10.1
 - DNS: 192.168.10.2
-- Свържете към SW1 на порт Fa0/6 (VLAN 10)
 
-### Стъпка 2: Конфигурирайте HTTP Service
+**Свързване:**
+```cisco
+SW1(config)# interface FastEthernet0/7
+SW1(config-if)# switchport mode access
+SW1(config-if)# switchport access vlan 10
+SW1(config-if)# description Web-Server
+SW1(config-if)# exit
+```
+
+**Забележка:** Използваме Fa0/7 (Fa0/6 е зает от File Server в Sem 3).
+
+### Стъпка 2: Конфигурация на HTTP Service
 
 **Server → Services → HTTP:**
-1. Включете HTTP (ON)
-2. Edit `index.html`:
+
+1. **HTTP Service:** ON
+2. Кликнете **index.html**
+3. **Изтрийте** стария код
+4. **Копирайте** следния HTML:
+
 ```html
 <!DOCTYPE html>
 <html>
-<head><title>Company Website</title></head>
+<head>
+    <title>Company Website</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; }
+        h1 { color: #0066cc; }
+    </style>
+</head>
 <body>
-  <h1>Welcome to Company.Local</h1>
-  <p>This is the internal company website.</p>
-  <p>DNS Resolution is working!</p>
+    <h1>Welcome to Company.Local</h1>
+    <p>This is the internal company website.</p>
+    <p>DNS Resolution is working! 🎉</p>
+    <hr>
+    <p>Server: 192.168.10.3</p>
 </body>
 </html>
 ```
-3. Save
+
+5. Кликнете **Save**
 
 ### Стъпка 3: Актуализирайте DNS
 
 **На DNS Server (192.168.10.2):**
-- Добавете: `web.company.local` A record → 192.168.10.3
+- Вече има запис: `web.company.local` → `192.168.10.3`
 
-### Стъпка 4: Тествайте от браузъра
+### Стъпка 4: Тестване от браузър
 
 **От PC1 → Desktop → Web Browser:**
+
+**URL:** `http://www.company.local`
+
+**Трябва да видите:**
 ```
-http://www.company.local
+Welcome to Company.Local
+This is the internal company website.
+DNS Resolution is working! 
+───────────────────────────
+Server: 192.168.10.3
 ```
 
-**Трябва да видите вашия HTML!**
+✅ **Успех!** DNS преобразува името → IP → браузърът зарежда страницата!
 
 ---
 
-## ЧАСТ 8: Troubleshooting DNS (10 мин)
+## ЧАСТ 8: Troubleshooting (10 мин)
 
 ### Проблем 1: "Ping request could not find host"
 
+**Симптоми:**
+```
+ping server.company.local
+Ping request could not find host server.company.local
+```
+
 **Проверки:**
+
+**1. DNS Server правилен ли е?**
 ```
-1. ipconfig /all     ← DNS server правилен ли е?
-2. ping 192.168.10.2 ← DNS сървърът достъпен ли е?
-3. nslookup server.company.local ← DNS resolving работи ли?
+ipconfig /all
+
+DNS Server: 192.168.10.2  ← Трябва да сочи към DNS Server
 ```
+
+**2. DNS Server достъпен ли е?**
+```
+ping 192.168.10.2
+```
+
+**3. DNS Server има ли записа?**
+- **Server → Services → DNS**
+- Проверете дали `server.company.local` съществува в таблицата
 
 ### Проблем 2: DNS не resolve-ва
 
 **На DNS Server:**
-- Services → DNS → Проверете дали service е ON
-- Проверете дали записите са добавени правилно
+1. **Services → DNS**
+2. Проверете дали **DNS Service е ON**
+3. Проверете дали записите са добавени правилно (Name, Type, Address)
 
-### Проблем 3: Работи от един PC, но не от друг
+### Проблем 3: Работи от един PC, не от друг
 
-**Проверка:**
+**Проверка на PC:**
 ```
 ipconfig /all
 ```
@@ -286,78 +505,43 @@ ipconfig /all
 ```
 ipconfig /release
 ipconfig /renew
+ipconfig /all   ← Проверете DNS Server
 ```
 
 ### Проблем 4: CNAME не работи
 
 **Уверете се че:**
-- CNAME record съществува
-- Сочи към съществуващ A record
-- Type е избран правилно като CNAME
+1. CNAME записът съществува
+2. Type е избран правилно като **CNAME**
+3. Address сочи към **съществуващ A record**
+
+**Пример:**
+```
+❌ ГРЕШНО:
+www.company.local (CNAME) → 192.168.10.3
+                            ↑
+                    Директно към IP (трябва A record!)
+
+✅ ПРАВИЛНО:
+www.company.local (CNAME) → web.company.local (A) → 192.168.10.3
+```
 
 ---
 
-## ЧАСТ 9: Advanced DNS - Multiple Domains
-
-### Scenario: Искате вътрешен и външен домейн
-
-**На DNS Server добавете:**
-
-**Internal domain (company.local):**
-- server.company.local → 192.168.10.2
-- www.company.local → 192.168.10.3
-
-**External domain (company.com) - симулирано:**
-- www.company.com → 8.8.8.8 (примерен external IP)
-
----
-
-## ЗАДАЧИ ЗА САМОСТОЯТЕЛНА РАБОТА
-
-### Задача 1: Добавете повече DNS записи
-Създайте записи за:
-- printer.company.local → 192.168.10.50
-- camera.company.local → 192.168.20.100
-- door.company.local → 192.168.20.101
-
-### Задача 2: Тест с различни domain names
-Добавете алтернативен домейн:
-- internal.net вместо company.local
-- Създайте съответните записи
-
-### Задача 3: Mail Server (MX Record)
-Добавете MX record:
-```
-Type: MX
-Name: company.local
-Address: mail.company.local
-Priority: 10
-```
-
-### Задача 4: Round-Robin DNS
-Създайте няколко A записа с едно име:
-```
-lb.company.local → 192.168.10.10
-lb.company.local → 192.168.10.11
-lb.company.local → 192.168.10.12
-```
-Тествайте с nslookup - ще видите всички адреси.
-
----
-
-## ДОКУМЕНТАЦИЯ ЗА ПРОЕКТА
+## ДОКУМЕНТАЦИЯ
 
 ### Таблица с DNS Records:
 
-| Record Type | Name                 | Points To            | IP Address    |
-|-------------|----------------------|----------------------|---------------|
-| A           | server.company.local | Self                 | 192.168.10.2  |
-| A           | router.company.local | R1                   | 192.168.10.1  |
-| A           | web.company.local    | Web Server           | 192.168.10.3  |
-| CNAME       | www.company.local    | web.company.local    | -             |
-| CNAME       | dns.company.local    | server.company.local | -             |
+| Record Type | Name | Points To | IP Address |
+|-------------|------|-----------|------------|
+| A | server.company.local | Self | 192.168.10.2 |
+| A | router.company.local | R1 | 192.168.10.1 |
+| A | web.company.local | Web Server | 192.168.10.3 |
+| CNAME | www.company.local | web.company.local | - |
+| CNAME | dns.company.local | server.company.local | - |
 
-### Конфигурация на DHCP със DNS:
+### DHCP конфигурация със DNS:
+
 ```cisco
 ip dhcp pool ADMIN_POOL
  network 192.168.10.0 255.255.255.0
@@ -368,66 +552,54 @@ ip dhcp pool ADMIN_POOL
 
 ---
 
-## DNS Lookup Process - Детайлно обяснение
+## ЗАДАЧИ ЗА САМОСТОЯТЕЛНА РАБОТА
 
-### Какво се случва при: `ping www.company.local`
+### Задача 1: Добавете повече DNS записи
+Създайте записи за:
+- `printer.company.local` → 192.168.10.50
+- `camera.company.local` → 192.168.20.100
 
-1. **PC1 проверява кеша си:**
-   - Има ли вече записан IP за www.company.local?
-   - Ако да → използва го директно
-   - Ако не → продължава към стъпка 2
+### Задача 2: Алтернативен домейн
+- Добавете записи за `internal.net`
+- Създайте A records с новия домейн
+- Тествайте с ping
 
-2. **PC1 изпраща DNS Query към DNS Server:**
-   ```
-   PC1 → UDP Port 53 → 192.168.10.2
-   Query: "What is the IP of www.company.local?"
-   ```
-
-3. **DNS Server обработва заявката:**
-   - Проверява дали има www.company.local
-   - Вижда че е CNAME → resolve-ва go web.company.local
-   - Намира A record: web.company.local → 192.168.10.3
-
-4. **DNS Server отговаря:**
-   ```
-   DNS Server → PC1
-   Answer: "www.company.local is 192.168.10.3"
-   ```
-
-5. **PC1 прави ICMP ping:**
-   ```
-   PC1 → 192.168.10.3
-   ICMP Echo Request
-   ```
+### Задача 3: Mail Server (MX Record - Advanced)
+```
+Type: MX
+Name: company.local
+Address: mail.company.local
+Priority: 10
+```
 
 ---
 
 ## CHECKLIST ЗА ЗАВЪРШВАНЕ
 
 ```
-☐ DNS Server е добавен на 192.168.10.2
-☐ DNS Service е активиран
+☐ DNS Server добавен (192.168.10.2)
+☐ DNS Service е активиран (ON)
 ☐ A records са създадени
-☐ CNAME records (aliases) работят
+☐ CNAME records работят
 ☐ DHCP pools сочат към DNS server
 ☐ PC-тата могат да ping по име
 ☐ nslookup работи правилно
-☐ Web browser може да зареди www.company.local
+☐ (BONUS) Web browser зарежда www.company.local
 ☐ DNS records са документирани
-☐ Troubleshooting е тестван
 ```
 
 ---
 
 ## КАКВО НАУЧИХМЕ
 
-1. ✅ Какво е DNS и как работи
-2. ✅ Конфигурация на DNS Server в Packet Tracer
-3. ✅ A records и CNAME records
-4. ✅ Интеграция с DHCP (dns-server option)
-5. ✅ nslookup команда за troubleshooting
-6. ✅ DNS resolution process
-7. ✅ Router като DNS forwarder (bonus)
+1. ✅ Какво е DNS и защо е важен (Име → IP)
+2. ✅ Как работи DNS Query процес
+3. ✅ Типове DNS records (A, CNAME)
+4. ✅ TTL (Time To Live)
+5. ✅ Конфигурация на DNS Server в Packet Tracer
+6. ✅ Интеграция с DHCP (dns-server option)
+7. ✅ nslookup команда за troubleshooting
+8. ✅ Web browser с DNS resolution
 
 ---
 
@@ -435,10 +607,20 @@ ip dhcp pool ADMIN_POOL
 
 В **Sem 5** ще научим:
 - Access Control Lists (ACL)
-- Как да контролираме трафика между VLAN-и
+- Контрол на трафика между VLAN-и
 - Security policies
 
 **Запазете файла като:** `Sem4_DNS_YourName.pkt`
+
+---
+
+**Успех! DNS е критичен компонент на всяка мрежа!**
+
+
+
+**гл. ас. Светослав Атанасов**  
+svetoslav.atanasov@trakia-uni.bg
+
 
 <script data-goatcounter="https://satanasov.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>

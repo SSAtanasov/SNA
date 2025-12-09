@@ -3,13 +3,13 @@
 
 **Цел:** Да се научите да създавате и прилагате ACL за контрол на достъпа между мрежи и VLAN-и.
 
-**Продължителност:** 90-120 минути
+**Продължителност:** 75-90 минути
 
-**Prerequisite:** Завършени Sem 1-4
+**Предварителни изисквания:** Завършени Sem 1-4 (особено Sem 2 с VLAN-и)
 
 ---
 
-## ЩО Е ТО ACCESS CONTROL LIST (ACL)? 
+## ЩО Е ТО ACCESS CONTROL LIST (ACL)?
 
 ### Основна концепция
 
@@ -31,132 +31,53 @@
 
 ### Защо имаме нужда от ACL?
 
-**Без ACL (open network):**
-```
-┌────────────────────────────────────┐
-│  Всички могат да достъпват всичко  │
-│                                    │
-│  Guest VLAN → Admin Server ✅      │
-│  IT VLAN → Finance Database ✅     │
-│  External → Internal Server ✅     │
-│                                    │
-│  ❌ НЯМА СИГУРНОСТ!                │
-└────────────────────────────────────┘
-```
-
-**С ACL (controlled access):**
-```
-┌────────────────────────────────────┐
-│  Достъпът е контролиран            │
-│                                    │
-│  Guest VLAN → Admin Server ❌      │
-│  IT VLAN → Finance Database ✅     │
-│  External → Internal Server ❌     │
-│                                    │
-│  ✅ ЗАЩИТА ЧРЕЗ ACL!               │
-└────────────────────────────────────┘
-```
+**Примери за защита:**
+- Guest VLAN не може да достъпва Admin Server ❌
+- IT VLAN може да достъпва всичко ✅
+- Блокиране на конкретни хостове
+- Ограничаване на услуги (само HTTP, не Telnet)
 
 ---
 
-## ВИДОВЕ ACL - ПОДРОБНО ОБЯСНЕНИЕ
+## ВИДОВЕ ACL - СРАВНЕНИЕ
 
-### 1. Standard ACL (Стандартен ACL)
+| Характеристика | Standard ACL | Extended ACL | Named ACL |
+|----------------|-------------|--------------|-----------|
+| **ACL номера** | 1-99, 1300-1999 | 100-199, 2000-2699 | Име (текст) |
+| **Филтрира по** | Source IP **САМО** | Source, Dest, Protocol, Port | Като Extended |
+| **Гъвкавост** | Ограничена | Много гъвкав | Най-гъвкав |
+| **Къде прилагаме** | Близо до **destination** | Близо до **source** | Като Extended |
+| **Пример** | `access-list 10 deny host 192.168.10.11` | `access-list 100 permit tcp ... eq 80` | `ip access-list extended WEB_ACCESS` |
+| **Кога използваме** | Блокиране на цели мрежи | Детайлен контрол (port, protocol) | Модерен подход (препоръчителен) |
 
-**Характеристики:**
-- Филтрира **САМО** по **source IP адрес** (откъде идва трафикът)
-- **НЕ** може да филтрира по destination, protocol, port
-- По-прост, но ограничен
-- ACL номера: **1-99** и **1300-1999**
-
-```
-Standard ACL логика:
-
-Пакет пристига:
-│
-├─ Source IP е 192.168.10.11? → ДА → DENY ❌
-├─ Source IP е 192.168.10.X? → ДА → PERMIT ✅
-└─ Всички останали → Implicit DENY ❌
-```
-
-**Пример команда:**
+### Standard ACL пример:
 ```cisco
 access-list 10 deny host 192.168.10.11
 access-list 10 permit any
 ```
+**Блокира САМО един хост, позволява всички останали**
 
-**Когато да използваме:**
-- Когато ни интересува САМО откъде идва трафикът
-- Когато искаме да блокираме/позволим **цяла мрежа**
-- За SSH/Telnet access control (VTY линии)
-
-**Къде да приложим:**
-- **Близо до DESTINATION** (крайната точка)
-- Защо? Защото филтрираме само по source, трябва да сме сигурни че трафикът вече е стигнал до правилното място
-
----
-
-### 2. Extended ACL (Разширен ACL)
-
-**Характеристики:**
-- Филтрира по **МНОЖЕСТВО критерии:**
-  - Source IP address
-  - Destination IP address
-  - Protocol (TCP, UDP, ICMP, IP)
-  - Source port
-  - Destination port
-- Много по-мощен и гъвкав
-- ACL номера: **100-199** и **2000-2699**
-
-```
-Extended ACL логика:
-
-Пакет пристига:
-│
-├─ Source: 192.168.20.0/24? → ДА
-│  ├─ Destination: 192.168.10.0/24? → ДА
-│  │  ├─ Protocol: TCP? → ДА
-│  │  │  ├─ Port: 80 (HTTP)? → ДА → PERMIT ✅
-│  │  │  └─ Port: 23 (Telnet)? → ДА → DENY ❌
-│  │  └─ Protocol: ICMP? → ДА → PERMIT ✅
-│  └─ Destination: 192.168.30.0/24? → ДА → PERMIT ✅
-└─ Всички останали → Implicit DENY ❌
-```
-
-**Пример команда:**
+### Extended ACL пример:
 ```cisco
 access-list 100 permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 80
+access-list 100 deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+access-list 100 permit ip any any
 ```
+**Позволява само HTTP от IT към Admin, блокира всичко останало**
 
-**Когато да използваме:**
-- Когато трябва детайлен контрол (protocol, port)
-- Когато искаме да разрешим само конкретни услуги (HTTP, DNS, SSH)
-- Когато филтрираме inter-VLAN трафик
-
-**Къде да приложим:**
-- **Близо до SOURCE** (началото на трафика)
-- Защо? Защото искаме да спрем нежелания трафик възможно най-рано
-
----
-
-### 3. Named ACL (Именован ACL)
-
-**Характеристики:**
-- Същото като Standard/Extended, но с **име** вместо номер
-- По-четливо (вместо "ACL 100" → "BLOCK_TELNET")
-- Лесно се редактира (можеш да добавяш/махаш правила)
-- Модерен подход (препоръчителен!)
-
-**Пример:**
+### Named ACL пример:
 ```cisco
-ip access-list extended ADMIN_ACCESS
- permit tcp 192.168.10.0 0.0.0.255 any eq 22
+ip access-list extended WEB_ONLY
+ remark Allow only HTTP and HTTPS
+ permit tcp any any eq 80
+ permit tcp any any eq 443
  deny ip any any
 ```
+**По-четлив и лесен за редакция**
 
 ---
 
-## ЩО Е ТО WILDCARD MASK? 🎭
+## ЩО Е ТО WILDCARD MASK?
 
 ### Subnet Mask vs Wildcard Mask
 
@@ -165,33 +86,27 @@ ip access-list extended ADMIN_ACCESS
 | Концепция | Subnet Mask | Wildcard Mask |
 |-----------|-------------|---------------|
 | **Цел** | Дефинира мрежа | Дефинира кои битове да се **игнорират** |
-| **Логика** | 1 = проверявай, 0 = не проверявай | 0 = проверявай, 1 = **игнорирай** |
-| **Пример** | 255.255.255.0 | 0.0.0.255 |
+| **Логика** | 1 = проверявай, 0 = игнорирай | 0 = проверявай, 1 = **игнорирай** |
+| **Пример /24** | 255.255.255.0 | 0.0.0.255 |
 | **Използване** | IP конфигурация | ACL филтриране |
 
----
-
-### Как работи Wildcard Mask?
-
-**Wildcard mask** казва на router-а: "Кои битове от IP адреса да **игнорирам** при сравнение?"
-
+### Бърза формула:
 ```
-IP адрес:      192.168.10.50
-Wildcard:      0.0.0.255
-               │  │  │  │
-               │  │  │  └─ 255 = игнорирай ВСИЧКИ битове (0-255)
-               │  │  └──── 0 = проверявай ТОЧНО
-               │  └─────── 0 = проверявай ТОЧНО
-               └────────── 0 = проверявай ТОЧНО
+Wildcard Mask = 255.255.255.255 - Subnet Mask
 
-Резултат: Съвпадат ВСИЧКИ адреси от 192.168.10.0 до 192.168.10.255
+Пример:
+Subnet Mask:  255.255.255.0
+Wildcard:     255.255.255.255
+            - 255.255.255.0
+            ─────────────────
+            = 0.0.0.255 ✅
 ```
 
 ---
 
-### Примери с Wildcard Masks
+## ТРИ ОСНОВНИ ПРИМЕРА С WILDCARD
 
-#### Пример 1: Цяла мрежа /24
+### Пример 1: Цяла мрежа /24
 
 **Искаме:** Всички адреси в 192.168.10.0/24
 
@@ -204,9 +119,7 @@ Wildcard: 0.0.0.255
 - 255 → Последният октет МОЖЕ ДА Е ВСИЧКО (0-255)
 
 Съвпада с:
-✅ 192.168.10.1
-✅ 192.168.10.50
-✅ 192.168.10.255
+✅ 192.168.10.1, 192.168.10.50, 192.168.10.255
 ❌ 192.168.11.1 (различен 3-ти октет)
 ```
 
@@ -217,9 +130,9 @@ access-list 10 permit 192.168.10.0 0.0.0.255
 
 ---
 
-#### Пример 2: Един конкретен хост
+### Пример 2: Един конкретен хост
 
-**Искаме:** САМО 192.168.10.50 (нищо друго!)
+**Искаме:** САМО 192.168.10.50
 
 ```
 IP:       192.168.10.50
@@ -231,8 +144,7 @@ Wildcard: 0.0.0.0
 
 Съвпада с:
 ✅ 192.168.10.50
-❌ 192.168.10.51
-❌ 192.168.10.49
+❌ 192.168.10.51, 192.168.10.49
 ```
 
 **В ACL:**
@@ -242,54 +154,9 @@ access-list 10 permit host 192.168.10.50
 access-list 10 permit 192.168.10.50 0.0.0.0
 ```
 
-**Кратък syntax:** `host 192.168.10.50` = `192.168.10.50 0.0.0.0`
-
 ---
 
-#### Пример 3: Диапазон от адреси
-
-**Искаме:** От 192.168.10.64 до 192.168.10.127 (64 адреса)
-
-```
-IP:       192.168.10.64
-Wildcard: 0.0.0.63
-
-Защо 63?
-64 адреса = 2^6 = последните 6 бита
-Binary: 00111111 = Decimal 63
-
-Съвпада с:
-✅ 192.168.10.64
-✅ 192.168.10.100
-✅ 192.168.10.127
-❌ 192.168.10.63 (под диапазона)
-❌ 192.168.10.128 (над диапазона)
-```
-
----
-
-#### Пример 4: Няколко мрежи едновременно
-
-**Искаме:** 192.168.0.0, 192.168.1.0, 192.168.2.0, 192.168.3.0
-
-```
-IP:       192.168.0.0
-Wildcard: 0.0.3.255
-
-Защо?
-3 = binary 00000011 (последните 2 бита на 3-тия октет)
-
-Съвпада с:
-✅ 192.168.0.X
-✅ 192.168.1.X
-✅ 192.168.2.X
-✅ 192.168.3.X
-❌ 192.168.4.X
-```
-
----
-
-#### Пример 5: Всички адреси (any)
+### Пример 3: Всички адреси (any)
 
 **Искаме:** Абсолютно ВСИЧКИ IP адреси
 
@@ -300,8 +167,6 @@ Wildcard: 255.255.255.255
 Обяснение:
 - Всички битове се игнорират
 - Съвпада с ВСИЧКО
-
-Кратък syntax: any
 ```
 
 **В ACL:**
@@ -313,124 +178,88 @@ access-list 10 permit 0.0.0.0 255.255.255.255
 
 ---
 
-### Бърза формула: Subnet → Wildcard
+### Често срещани Wildcard Masks:
 
-```
-Wildcard Mask = 255.255.255.255 - Subnet Mask
-
-Пример:
-Subnet Mask:  255.255.255.0
-Wildcard:     255.255.255.255
-            - 255.255.255.0
-            ─────────────────
-            = 0.0.0.255 ✅
-```
-
-**Таблица с често срещани:**
-
-| Subnet Mask | Wildcard Mask | Какво означава |
-|-------------|---------------|----------------|
-| 255.255.255.255 | 0.0.0.0 | Един хост |
-| 255.255.255.0 | 0.0.0.255 | /24 мрежа (254 хоста) |
-| 255.255.0.0 | 0.0.255.255 | /16 мрежа (65534 хоста) |
-| 255.0.0.0 | 0.255.255.255 | /8 мрежа |
-| 0.0.0.0 | 255.255.255.255 | Всички адреси (any) |
+| Subnet Mask | Wildcard Mask | Какво означава | Пример |
+|-------------|---------------|----------------|---------|
+| 255.255.255.255 | 0.0.0.0 | Един хост | `host 192.168.10.50` |
+| 255.255.255.0 | 0.0.0.255 | /24 мрежа (254 хоста) | `192.168.10.0 0.0.0.255` |
+| 255.255.0.0 | 0.0.255.255 | /16 мрежа | `192.168.0.0 0.0.255.255` |
+| 0.0.0.0 | 255.255.255.255 | Всички адреси | `any` |
 
 ---
 
 ## ACL PROCESSING - КАК РАБОТИ?
 
-### Последователна проверка (Top-to-Bottom)
+### Три ключови правила:
+
+#### 1. **Top-to-Bottom Processing (Последователна проверка)**
 
 ```
-ACL е СПИСЪК с правила, които се проверяват ПОСЛЕДОВАТЕЛНО:
+ACL правилата се проверяват ОТ ГОРЕ НАДОЛУ:
 
 ┌────────────────────────────────────┐
-│ 1. permit tcp host 192.168.10.11   │ ← Проверка 1
+│ 1. permit tcp host 192.168.10.11   │ ← Първо проверява това
 │         any eq 80                  │
 ├────────────────────────────────────┤
-│ 2. permit tcp host 192.168.10.12   │ ← Проверка 2
-│         any eq 443                 │
-├────────────────────────────────────┤
-│ 3. deny tcp 192.168.10.0 0.0.0.255 │ ← Проверка 3
+│ 2. deny tcp 192.168.10.0 0.0.0.255 │ ← После това
 │         any                        │
 ├────────────────────────────────────┤
-│ 4. permit ip any any               │ ← Проверка 4
+│ 3. permit ip any any               │ ← Накрая това
 ├────────────────────────────────────┤
 │ [implicit deny ip any any]         │ ← Невидимо, винаги в края
 └────────────────────────────────────┘
 ```
 
-**Как се обработва пакет:**
+#### 2. **First Match Wins (Първото съвпадение печели)**
 
 ```
-Пакет пристига:
+Когато пакет СЪВПАДНЕ с правило → прилага се и проверката СПИРА
+
+Пример:
+Пакет от 192.168.10.11 → порт 80
 │
-├─ Проверява правило 1 → Съвпада? → ДА → PERMIT ✅ [СТОП тук!]
-├─ Проверява правило 1 → Съвпада? → НЕ → Продължава...
-├─ Проверява правило 2 → Съвпада? → ДА → PERMIT ✅ [СТОП тук!]
-├─ Проверява правило 2 → Съвпада? → НЕ → Продължава...
-├─ Проверява правило 3 → Съвпада? → ДА → DENY ❌ [СТОП тук!]
-├─ Проверява правило 3 → Съвпада? → НЕ → Продължава...
-├─ Проверява правило 4 → Съвпада? → ДА → PERMIT ✅ [СТОП тук!]
-└─ Няма съвпадение → Implicit Deny → DENY ❌
+├─ Правило 1: permit tcp host 192.168.10.11 eq 80 → ✅ СЪВПАДА!
+│  └─ Резултат: PERMIT → СПИРА тук (не проверява останалите)
+│
+Правило 2: deny tcp 192.168.10.0 0.0.0.255 any
+└─ НЕ СЕ ПРОВЕРЯВА (вече е минал)
 ```
 
-**Важно:**
-- **Първото съвпадение СПИРА обработката** (не проверява останалите)
-- **Implicit deny all** е ВИНАГИ в края (невидимо правило)
+#### 3. **Implicit Deny All (Невидимо "deny all" в края)**
 
----
-
-### Implicit Deny All - ВАЖНО!
-
-**В края на ВСЕКИ ACL има невидимо правило:**
-
+**В края на ВСЕКИ ACL има невидимо:**
 ```cisco
-! Това е НЕВИДИМО, но е там!
 deny ip any any
 ```
 
-**Какво означава:**
-
+**Което означава:**
 ```
-Ако НИТО ЕДНО правило не съвпадне → БЛОКИРАЙ всичко!
-
-Пример:
-
-access-list 10 deny host 192.168.10.11
-! Липсва "permit any" → IMPLICIT DENY ще блокира всички останали!
-
-Резултат:
-❌ 192.168.10.11 → blocked (explicit deny)
-❌ 192.168.10.12 → blocked (implicit deny)
-❌ 192.168.20.1 → blocked (implicit deny)
-❌ ВСИЧКО ДРУГО → blocked (implicit deny)
+Ако НИТО ЕДНО правило не съвпадне → автоматично DENY ❌
 ```
 
-**Правилна конфигурация:**
-
+**Затова ВИНАГИ трябва:**
 ```cisco
 access-list 10 deny host 192.168.10.11
-access-list 10 permit any          ← ВАЖНО! Позволява всички останали
+access-list 10 permit any    ← БЕЗ ТОВА: всички останали ще бъдат блокирани!
 ```
 
 ---
 
-## ЧАСТ 1: Топология за семинара (10 мин)
+## ЧАСТ 1: Топология - Продължаваме от Sem 4
 
-### Използваме същата топология от Sem 2-4 + DNS Server
+### Използваме топологията от Sem 1-4:
 
 ```
               [Router R1]
-              192.168.10.1 (.10)
-              192.168.20.1 (.20)
+              192.168.10.1 (VLAN 10)
+              192.168.20.1 (VLAN 20)
                    |
             GigE0/0 (trunk)
                    |
               [Switch SW1]
          /     |     |     |     \
-      Fa0/5 Fa0/2 Fa0/3 Fa0/4 Fa0/6
+     Fa0/11 Fa0/2 Fa0/3 Fa0/4 Fa0/5
         |     |     |     |     |
       DNS   PC1   PC2   PC3   PC4
      Server Admin Admin  IT    IT
@@ -439,802 +268,588 @@ access-list 10 permit any          ← ВАЖНО! Позволява всичк
    VLAN 10 (Admin)       VLAN 20 (IT)
 ```
 
-### Addressing Table:
+### Мрежова информация от предишните лабове:
 
-| Device | Interface | IP Address | VLAN | Gateway |
-|--------|-----------|------------|------|---------|
-| R1 | GigE0/0.10 | 192.168.10.1 | 10 | N/A |
-| R1 | GigE0/0.20 | 192.168.20.1 | 20 | N/A |
-| SW1 | VLAN 1 | 192.168.10.2 | 10 | 192.168.10.1 |
-| DNS Server | NIC | 192.168.10.2 | 10 | 192.168.10.1 |
-| PC1-Admin | NIC | 192.168.10.11 | 10 | 192.168.10.1 |
-| PC2-Admin | NIC | 192.168.10.12 | 10 | 192.168.10.1 |
-| PC3-IT | NIC | 192.168.20.11 | 20 | 192.168.20.1 |
-| PC4-IT | NIC | 192.168.20.12 | 20 | 192.168.20.1 |
+| VLAN | Име | Network | Gateway | DNS Server |
+|------|-----|---------|---------|------------|
+| 10 | Administration | 192.168.10.0/24 | 192.168.10.1 | 192.168.10.2 |
+| 20 | IT Department | 192.168.20.0/24 | 192.168.20.1 | 192.168.10.2 |
+
+### Устройства:
+- **DNS Server:** 192.168.10.2 (на Fa0/11, VLAN 10)
+- **PC1:** 192.168.10.11 (VLAN 10 - Admin)
+- **PC2:** 192.168.10.12 (VLAN 10 - Admin)
+- **PC3:** 192.168.20.11 (VLAN 20 - IT)
+- **PC4:** 192.168.20.12 (VLAN 20 - IT)
+
+**Забележка:** Ако вашата топология от Sem 4 има различни IP адреси, използвайте ги в примерите по-долу.
+
+---
+
+## ЧАСТ 2: Тестване БЕЗ ACL (baseline test) (10 мин)
+
+### Преди да добавяме ACL, тестваме какво работи:
+
+**От PC3 (IT VLAN 20):**
+```
+ping 192.168.10.2     (DNS Server в Admin VLAN)
+ping 192.168.10.11    (PC1 в Admin VLAN)
+ping 192.168.10.12    (PC2 в Admin VLAN)
+```
+
+**Очакван резултат:**
+```
+✅ Всички ping-ове работят (без ACL, няма рестрикции)
+```
+
+**От PC1 (Admin VLAN 10):**
+```
+ping 192.168.20.11    (PC3 в IT VLAN)
+ping 192.168.20.12    (PC4 в IT VLAN)
+```
+
+**Очакван резултат:**
+```
+✅ Всички ping-ове работят
+```
+
+**Документирайте резултатите:** Ще ги сравним след прилагане на ACL!
 
 ---
 
-## ЧАСТ 2: Standard ACL - Базов пример (25 мин)
 
-### Scenario 1: Блокирай PC1 да достъпва IT VLAN
+## ЧАСТ 3: Сценарий 1 - Блокиране на цял VLAN (20 мин)
 
-**Бизнес requirement:** 
-PC1 (конкретен администраторски компютър) не трябва да има достъп до IT VLAN поради policy.
+### Изискване:
+**IT VLAN (20) НЕ може да достъпва Admin VLAN (10)**
 
----
+⚠️ **ВАЖНО:** ACL работи САМО за трафик който минава през router (между различни VLAN-и)!
 
 ### Стъпка 1: Създаване на Standard ACL
 
 ```cisco
 R1# configure terminal
-R1(config)# access-list 10 deny host 192.168.10.11
+R1(config)# access-list 10 remark Block IT from accessing Admin VLAN  
+R1(config)# access-list 10 deny 192.168.20.0 0.0.0.255
 R1(config)# access-list 10 permit any
-R1(config)# exit
 ```
 
-**Детайлно обяснение на командите:**
+**Обяснение:**
+- `deny 192.168.20.0 0.0.0.255` - блокира ЦЯЛАТА мрежа 192.168.20.0/24
+- `permit any` - **КРИТИЧНО!** Позволява всички останали
 
-| Команда | Какво прави | Защо |
-|---------|-------------|------|
-| `access-list 10` | Създава Standard ACL с номер 10 | 10 е в диапазона 1-99 (standard) |
-| `deny` | Блокира трафика | Забранява пакети |
-| `host 192.168.10.11` | Конкретен IP адрес | Същото като `192.168.10.11 0.0.0.0` |
-| `permit any` | Позволява всичко останало | **КРИТИЧНО!** Без това implicit deny ще блокира всички |
+### Стъпка 2: Прилагане на ACL
 
-**Какво прави този ACL:**
-
-```
-Входящ трафик:
-│
-├─ Source е 192.168.10.11? → ДА → DENY ❌ [PC1 блокиран]
-└─ Source е друг? → ДА → PERMIT ✅ [Всички останали позволени]
-```
-
----
-
-### Стъпка 2: Прилагане на ACL към интерфейс
+**Standard ACL прилагаме близо до DESTINATION (Admin VLAN):**
 
 ```cisco
-R1(config)# interface GigabitEthernet0/0.20
+R1(config)# interface GigabitEthernet0/0.10
 R1(config-subif)# ip access-group 10 out
 R1(config-subif)# exit
 ```
 
-**Обяснение на командите:**
+**Защо `out`?**
+- Трафик ИЗЛИЗАЩ към VLAN 10 (Admin)
+- Блокира всичко от IT към Admin
 
-| Команда | Какво прави | Детайли |
-|---------|-------------|---------|
-| `interface GigE0/0.20` | Влиза в конфигурация на subinterface за VLAN 20 | Това е gateway-ят към IT VLAN |
-| `ip access-group 10 out` | Прилага ACL 10 в **изходяща** посока | `out` = трафик ИЗЛИЗА от router към VLAN 20 |
-
----
-
-### IN vs OUT - КАК ДА РЕШИМ?
-
-```
-Perspective: Винаги от гледна точка на ROUTER-А!
-
-┌─────────────────────────────────────────────┐
-│           Router R1                         │
-│                                             │
-│   [IN] ←── Interface GigE0/0.20 ──→ [OUT]  │
-│            (към VLAN 20)                    │
-└─────────────────────────────────────────────┘
-
-IN = Трафик ВЛИЗА В router-а ОТ VLAN 20
-OUT = Трафик ИЗЛИЗА ОТ router-а КЪМ VLAN 20
+### Стъпка 3: Записване
+```cisco
+R1(config)# exit
+R1# copy running-config startup-config
 ```
 
-**В нашия случай:**
+### Стъпка 4: Тестване
 
+**От PC3 (IT VLAN - 192.168.20.11):**
 ```
-PC1 (VLAN 10) иска да достъпи PC3 (VLAN 20):
-
-1. PC1 → Router subinterface .10 [трафик влиза]
-2. Router routing decision → трябва към VLAN 20
-3. Router → subinterface .20 → VLAN 20 [трафик ИЗЛИЗА] ← ACL тук!
-                                         ↑
-                                    OUT direction
+ping 192.168.10.2     ← ❌ НЕ РАБОТИ (блокиран)
+ping 192.168.10.11    ← ❌ НЕ РАБОТИ (блокиран)
 ```
 
-**Защо OUT, а не IN?**
-- Искаме да филтрираме трафик ИЗЛИЗАЩ към VLAN 20
-- Standard ACL се прилага близо до destination
-- OUT = "Преди да излезе пакетът, провери ACL"
-
----
-
-### Стъпка 3: Тестване
-
+**От PC1 (Admin VLAN - 192.168.10.11):**
 ```
-От PC1 (192.168.10.11):
-C:\> ping 192.168.20.11
-Request timed out. ❌
-
-От PC2 (192.168.10.12):
-C:\> ping 192.168.20.11
-Reply from 192.168.20.11 ✅
+ping 192.168.20.11    ← ✅ РАБОТИ (Admin → IT позволен)
 ```
 
-**Какво се случва:**
-
-**PC1 → PC3 (blocked):**
+**От PC1 към PC2 (и двата Admin VLAN):**
 ```
-1. PC1 изпраща ICMP към 192.168.20.11
-2. Switch форвардва към Router subinterface .10
-3. Router проверява routing table → към GigE0/0.20
-4. Преди да излезе на .20, Router проверява ACL 10 (OUT direction)
-5. ACL проверка:
-   - Source е 192.168.10.11? ДА → DENY ❌
-6. Пакетът се ОТХВЪРЛЯ (не се изпраща към PC3)
+ping 192.168.10.12    ← ✅ РАБОТИ (остава в switch, не минава през ACL)
 ```
 
-**PC2 → PC3 (allowed):**
-```
-1. PC2 изпраща ICMP към 192.168.20.11
-2. Switch форвардва към Router subinterface .10
-3. Router проверява routing table → към GigE0/0.20
-4. Преди да излезе на .20, Router проверява ACL 10 (OUT direction)
-5. ACL проверка:
-   - Source е 192.168.10.11? НЕ
-   - Permit any? ДА → PERMIT ✅
-6. Пакетът се ИЗПРАЩА към PC3
-```
-
----
-
-### Стъпка 4: Проверка на ACL
+### Верификация:
 
 ```cisco
 R1# show access-lists
-```
-
-**Очакван резултат:**
-```
 Standard IP access list 10
-    10 deny   192.168.10.11
-    20 permit any
-```
+    10 deny   192.168.20.0, wildcard bits 0.0.0.255
+    20 permit any (5 matches)
 
-**Проверка на интерфейса:**
-```cisco
-R1# show ip interface GigabitEthernet0/0.20
-```
-
-**Търсете:**
-```
-Outgoing access list is 10
-Inbound  access list is not set
+R1# show ip interface GigabitEthernet0/0.10 | include access list
+  Outgoing access list is 10
 ```
 
 ---
 
-### Стъпка 5: Премахване на ACL (ако трябва)
+## ЧАСТ 4: Extended ACL - Разрешаване само HTTP/HTTPS (30 мин)
+
+### Изискване:
+**IT VLAN може да достъпва само HTTP (80) и HTTPS (443) към Admin VLAN, но не и други услуги**
+
+### Стъпка 1: Премахване на предишния ACL
 
 ```cisco
-R1(config)# interface GigE0/0.20
+R1# configure terminal
+R1(config)# interface GigabitEthernet0/0.10
 R1(config-subif)# no ip access-group 10 out
 R1(config-subif)# exit
 R1(config)# no access-list 10
 ```
 
-**Важен ред:**
-1. **Първо** махни от интерфейса (`no ip access-group`)
-2. **После** изтрий ACL-а (`no access-list`)
-
----
-
-## ЧАСТ 3: Extended ACL - Advanced (35 мин)
-
-### Scenario 2: Позволи само HTTP, HTTPS и ICMP от IT към Admin VLAN
-
-**Бизнес requirement:**
-IT отделът трябва да може да:
-- ✅ Ping-ва Admin устройства (troubleshooting)
-- ✅ Достъпва web services (HTTP/HTTPS)
-- ❌ НЕ може Telnet, SSH, FTP и т.н. към Admin
-
----
-
-### Стъпка 1: Анализ на requirement
-
-```
-Какво трябва да филтрираме?
-├─ Source: IT VLAN (192.168.20.0/24)
-├─ Destination: Admin VLAN (192.168.10.0/24)
-├─ Protocols: TCP (HTTP, HTTPS), ICMP (ping)
-└─ Ports: 80 (HTTP), 443 (HTTPS)
-
-Заключение: Трябва EXTENDED ACL! ✅
-```
-
----
-
 ### Стъпка 2: Създаване на Extended ACL
 
 ```cisco
-R1(config)# access-list 100 remark IT to Admin Access Control
+R1(config)# access-list 100 remark IT to Admin - HTTP/HTTPS only
 R1(config)# access-list 100 permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 80
 R1(config)# access-list 100 permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 443
 R1(config)# access-list 100 permit icmp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
 R1(config)# access-list 100 deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
 R1(config)# access-list 100 permit ip any any
-R1(config)# exit
 ```
 
-**Детайлно обяснение НА ВСЯКА КОМАНДА:**
+**Обяснение на wildcard mask:**
+- 0.0.0.255 означава "игнорирай последния октет"
+- 192.168.20.0 0.0.0.255 = всички адреси от 192.168.20.0 до .255
 
----
-
-#### Команда 1: Remark (коментар)
-
-```cisco
-access-list 100 remark IT to Admin Access Control
-```
-
-| Елемент | Значение |
-|---------|----------|
-| `access-list 100` | Extended ACL номер 100 (диапазон 100-199) |
-| `remark` | Добавя коментар (за документация) |
-| `IT to Admin...` | Текстът на коментара |
-
-**Не прави нищо функционално, само документация!**
-
----
-
-#### Команда 2: Permit HTTP
-
-```cisco
-access-list 100 permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 80
-```
-
-**Breakdown:**
-
-| Част | Значение | Обяснение |
-|------|----------|-----------|
-| `access-list 100` | ACL номер | Extended ACL |
-| `permit` | Действие | Позволява трафика |
-| `tcp` | Протокол | TCP пакети (не UDP, ICMP) |
-| `192.168.20.0 0.0.0.255` | **Source** | ОТ VLAN 20 (192.168.20.1-254) |
-| `192.168.10.0 0.0.0.255` | **Destination** | КЪМ VLAN 10 (192.168.10.1-254) |
-| `eq 80` | Destination port | Port 80 (HTTP) |
-
-**Какво прави:**
-```
-Позволява TCP трафик:
-- ОТ всеки адрес в 192.168.20.0/24
-- КЪМ всеки адрес в 192.168.10.0/24
-- Само ако destination port е 80 (HTTP)
-```
-
----
-
-#### Команда 3: Permit HTTPS
-
-```cisco
-access-list 100 permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 443
-```
-
-**Същото като HTTP, но port 443 (HTTPS)**
-
----
-
-#### Команда 4: Permit ICMP (ping)
-
-```cisco
-access-list 100 permit icmp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
-```
-
-| Част | Значение |
-|------|----------|
-| `icmp` | Протокол ICMP (ping, traceroute) |
-| Няма port | ICMP няма портове (Layer 3 протокол) |
-
-**Какво прави:**
-```
-Позволява ICMP трафик (ping):
-- ОТ VLAN 20
-- КЪМ VLAN 10
-- Всички ICMP типове (echo, echo-reply, unreachable...)
-```
-
----
-
-#### Команда 5: Deny всичко останало (IT → Admin)
-
-```cisco
-access-list 100 deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
-```
-
-| Част | Значение |
-|------|----------|
-| `deny` | Блокира |
-| `ip` | ВСИЧКИ IP протоколи (TCP, UDP, ICMP, OSPF...) |
-
-**Какво прави:**
-```
-Блокира ВСИЧКО ОСТАНАЛО:
-- ОТ VLAN 20
-- КЪМ VLAN 10
-- Което не съвпада с горните правила (Telnet, SSH, FTP...)
-```
-
-**Защо е нужно?**
-- HTTP, HTTPS, ICMP вече са позволени (правила 1-3)
-- Искаме да блокираме всичко друго (Telnet, SSH, FTP)
-- Но НЕ искаме да блокираме трафик към ДРУГИ VLAN-и
-
----
-
-#### Команда 6: Permit всичко останало (други VLAN-и)
-
-```cisco
-access-list 100 permit ip any any
-```
-
-**Какво прави:**
-```
-Позволява ВСИЧКО което не съвпада с горните правила:
-- Трафик от VLAN 20 към други мрежи (не Admin) ✅
-- Трафик от други VLAN-и ✅
-- Трафик между други мрежи ✅
-```
-
-**Без това правило:**
-```
-Implicit deny ще блокира:
-❌ VLAN 20 → Internet
-❌ VLAN 10 → VLAN 20
-❌ ВСИЧКО което не е експлицитно позволено
-```
-
----
-
-### Логика на ACL 100 (flowchart):
-
-```
-Пакет пристига на Router:
-│
-├─ Source: 192.168.20.X && Dest: 192.168.10.X && TCP port 80?
-│  └─ ДА → PERMIT ✅ (HTTP позволен)
-│
-├─ Source: 192.168.20.X && Dest: 192.168.10.X && TCP port 443?
-│  └─ ДА → PERMIT ✅ (HTTPS позволен)
-│
-├─ Source: 192.168.20.X && Dest: 192.168.10.X && ICMP?
-│  └─ ДА → PERMIT ✅ (Ping позволен)
-│
-├─ Source: 192.168.20.X && Dest: 192.168.10.X?
-│  └─ ДА → DENY ❌ (Всичко друго IT→Admin блокирано)
-│
-└─ Всичко останало?
-   └─ PERMIT ✅ (Други VLAN-и, към интернет и т.н.)
-```
-
----
+**Логика на ACL 100:**
+1. Permit TCP port 80 (HTTP) от IT към Admin
+2. Permit TCP port 443 (HTTPS) от IT към Admin
+3. Permit ICMP (ping) от IT към Admin - за тестване
+4. Deny всичко останало от IT към Admin
+5. Permit всичко останало (други VLAN-и или трафик)
 
 ### Стъпка 3: Прилагане на ACL
+
+**Extended ACL прилагаме близо до SOURCE:**
 
 ```cisco
 R1(config)# interface GigabitEthernet0/0.20
 R1(config-subif)# ip access-group 100 in
 R1(config-subif)# exit
+R1(config)# exit
+R1# copy running-config startup-config
 ```
 
-**Защо IN, а не OUT?**
-
-```
-Искаме да филтрираме трафик ВЛИЗАЩ от VLAN 20:
-
-PC3 (VLAN 20) → Router subinterface .20 [IN direction] ← ACL тук!
-                         ↓
-                   Routing decision
-                         ↓
-                Router subinterface .10 → VLAN 10
-```
-
-**Extended ACL best practice:**
-- Прилагай близо до **source** (където започва трафикът)
-- Използвай **IN** direction (влизащ трафик)
-
----
+**Защо `in`?**
+- Спира трафика КОГАТО ВЛИЗА от VLAN 20 към router-а
+- По-ефективно (спираме го рано)
 
 ### Стъпка 4: Тестване
 
-#### Test 1: ICMP (ping) - ТРЯБВА ДА РАБОТИ ✅
-
+**От PC3 (IT VLAN - 192.168.20.11):**
 ```
-От PC3 (IT - 192.168.20.11):
-C:\> ping 192.168.10.2
-Reply from 192.168.10.2 ✅
-
-C:\> ping 192.168.10.11
-Reply from 192.168.10.11 ✅
+ping 192.168.10.2      ← DNS Server → ✅ РАБОТИ (ICMP permitnat)
+ping 192.168.10.11     ← PC1 → ✅ РАБОТИ
 ```
 
-**Защо работи?**
+**Симулиране на HTTP трафик (Packet Tracer):**
+- Desktop → Web Browser → http://192.168.10.2
+- Ако има HTTP server на DNS-а → ✅ РАБОТИ
+
+**Тестване на блокирани услуги:**
 ```
-ACL 100 правило 3: permit icmp 192.168.20.0 ... 192.168.10.0 ...
-├─ Source: 192.168.20.11 ✅
-├─ Destination: 192.168.10.2 ✅
-├─ Protocol: ICMP ✅
-└─ Съвпада → PERMIT ✅
-```
-
----
-
-#### Test 2: HTTP - ТРЯБВА ДА РАБОТИ ✅
-
-**Стартирайте HTTP service на DNS Server (192.168.10.2):**
-
-1. Кликнете DNS Server → Services → HTTP
-2. HTTP should be ON
-
-**Тест от PC3:**
-```
-C:\> Web Browser
-URL: http://192.168.10.2
-Result: Страницата се зарежда ✅
+telnet 192.168.10.2 23  ← Telnet → ❌ НЕ РАБОТИ (блокиран)
 ```
 
----
-
-#### Test 3: Telnet - ТРЯБВА ДА Е БЛОКИРАН ❌
-
-**Ако имате Telnet service на Admin устройство:**
-
+**От PC1 (Admin VLAN → 192.168.10.11):**
 ```
-От PC3:
-C:\> telnet 192.168.10.2
-Connection failed ❌
+ping 192.168.20.11   ← PC3 в IT → ✅ РАБОТИ (няма рестрикции от Admin към IT)
 ```
 
-**Защо е блокиран?**
-```
-ACL 100 проверка:
-├─ Правило 1 (HTTP port 80)? НЕ → продължава
-├─ Правило 2 (HTTPS port 443)? НЕ → продължава
-├─ Правило 3 (ICMP)? НЕ → продължава
-├─ Правило 4 (deny ip IT→Admin)? ДА ✅
-└─ Action: DENY ❌ [Telnet е блокиран]
-```
-
----
-
-### Стъпка 5: Проверка на ACL
+### Верификация:
 
 ```cisco
-R1# show access-lists
-```
-
-**Очакван резултат:**
-```
+R1# show access-lists 100
 Extended IP access list 100
-    10 permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq www (5 matches)
+    10 permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq www
     20 permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 443
-    30 permit icmp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 (8 matches)
-    40 deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 (12 matches)
-    50 permit ip any any (54 matches)
+    30 permit icmp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 (3 matches)
+    40 deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+    50 permit ip any any (15 matches)
+
+R1# show ip interface GigabitEthernet0/0.20
+GigabitEthernet0/0.20 is up, line protocol is up
+  Internet address is 192.168.20.1/24
+  Inbound  access list is 100
+  Outgoing access list is not set
 ```
 
-**Забележка:**
-- `(X matches)` показва колко пъти е използвано правилото
-- Помага да видиш кои правила "работят"
+**Забележка:** `(X matches)` показва колко пъти е използвано правилото
 
 ---
 
-## ЧАСТ 4: Named ACL (Модерен подход) (20 мин)
+## ЧАСТ 5: Named ACL - Модерен подход (20 мин)
 
-### Защо Named ACL?
+### Предимства на Named ACL:
+- По-четливи имена (вместо номера)
+- Лесно се редактират (add/remove/resequence rules)
+- По-добра организация и документация
 
-| Standard/Extended ACL | Named ACL |
-|----------------------|-----------|
-| `access-list 10` | `ip access-list standard BLOCK_PC1` |
-| Трудно се запомня какво е "ACL 10" | Описателно име ✅ |
-| Не може да редактираш лесно | Можеш да добавяш/махаш правила ✅ |
-| Остарял подход | Модерен, препоръчан ✅ |
+### Сценарий: Създаване на Named Extended ACL
 
----
-
-### Scenario 3: Admin VLAN пълен достъп до IT VLAN
+### Стъпка 1: Премахване на номерирания ACL
 
 ```cisco
-R1(config)# ip access-list extended ADMIN_TO_IT
-R1(config-ext-nacl)# remark Allow full access from Admin to IT
-R1(config-ext-nacl)# permit ip 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255
-R1(config-ext-nacl)# exit
-```
-
-**Обяснение:**
-
-| Команда | Какво прави |
-|---------|-------------|
-| `ip access-list extended ADMIN_TO_IT` | Създава Named Extended ACL |
-| `remark ...` | Коментар |
-| `permit ip ...` | Позволява ВСИЧКО (ip = all protocols) |
-
----
-
-### Прилагане на Named ACL:
-
-```cisco
-R1(config)# interface GigabitEthernet0/0.10
-R1(config-subif)# ip access-group ADMIN_TO_IT out
+R1# configure terminal
+R1(config)# interface GigabitEthernet0/0.20
+R1(config-subif)# no ip access-group 100 in
 R1(config-subif)# exit
+R1(config)# no access-list 100
 ```
 
-**Същото като numbered ACL, но с име!**
-
----
-
-### Редактиране на Named ACL:
-
-**Добавяне на ново правило НА КОНКРЕТНА ПОЗИЦИЯ:**
+### Стъпка 2: Създаване на Named ACL
 
 ```cisco
-R1(config)# ip access-list extended ADMIN_TO_IT
-R1(config-ext-nacl)# 15 deny tcp host 192.168.10.11 any eq 23
+R1(config)# ip access-list extended IT_TO_ADMIN
+R1(config-ext-nacl)# remark Allow only HTTP and HTTPS from IT to Admin
+R1(config-ext-nacl)# permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 80
+R1(config-ext-nacl)# permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 443
+R1(config-ext-nacl)# permit icmp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+R1(config-ext-nacl)# deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+R1(config-ext-nacl)# permit ip any any
 R1(config-ext-nacl)# exit
 ```
 
-**Номерът 15** определя позицията (между правила 10 и 20)
-
-**Изтриване на правило:**
+### Стъпка 3: Прилагане
 
 ```cisco
-R1(config)# ip access-list extended ADMIN_TO_IT
+R1(config)# interface GigabitEthernet0/0.20
+R1(config-subif)# ip access-group IT_TO_ADMIN in
+R1(config-subif)# exit
+R1(config)# exit
+R1# copy running-config startup-config
+```
+
+### Стъпка 4: Добавяне/Редактиране на правила
+
+**Предимство:** Можем да вмъкнем ново правило на конкретна позиция!
+
+```cisco
+R1(config)# ip access-list extended IT_TO_ADMIN
+R1(config-ext-nacl)# 15 permit tcp host 192.168.20.11 any eq 22
+R1(config-ext-nacl)# exit
+```
+
+**Номерът 15** поставя правилото ПРЕДИ правило 20.
+
+### Показване на правилата с номера:
+
+```cisco
+R1# show access-lists IT_TO_ADMIN
+Extended IP access list IT_TO_ADMIN
+    10 permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq www
+    15 permit tcp host 192.168.20.11 any eq 22
+    20 permit tcp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 443
+    30 permit icmp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+    40 deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+    50 permit ip any any
+```
+
+### Изтриване на конкретно правило:
+
+```cisco
+R1(config)# ip access-list extended IT_TO_ADMIN
 R1(config-ext-nacl)# no 15
 R1(config-ext-nacl)# exit
 ```
 
 ---
 
-## ЧАСТ 5: ACL за защита на Router (VTY линии) (20 мин)
+## ЧАСТ 6: SSH Access Control на Router (15 мин)
 
-### Scenario 4: SSH достъп САМО от Admin VLAN
+### Изискване:
+**Само Admin VLAN (192.168.10.0/24) може да прави SSH към router-а**
 
-**Problem:** 
-Всеки може да се опита да влезе в router-а чрез SSH!
+⚠️ **ВНИМАНИЕ:** Преди да прилагате ACL на VTY линиите, уверете се че:
+1. Конзолният достъп работи (за rescue при грешка)
+2. ACL включва ВАШИЯ текущ IP адрес
+3. Имате физически достъп до устройството при нужда
 
-**Solution:**
-ACL на VTY линиите (virtual terminal lines = Telnet/SSH)
+**Грешка в ACL може да ви блокира напълно от достъп!**
 
----
-
-### Стъпка 1: Конфигурация на SSH (ако не е направено)
+### Стъпка 1: Конфигуриране на SSH на router (ако не е направено)
 
 ```cisco
 R1(config)# hostname R1
 R1(config)# ip domain-name company.local
 R1(config)# crypto key generate rsa
 How many bits in the modulus [512]: 1024
-R1(config)# username admin privilege 15 secret cisco123
+R1(config)# username admin secret cisco123
 R1(config)# line vty 0 4
 R1(config-line)# transport input ssh
 R1(config-line)# login local
 R1(config-line)# exit
 ```
 
-**Обяснение:**
-
-| Команда | Какво прави |
-|---------|-------------|
-| `ip domain-name` | Нужен за RSA keys |
-| `crypto key generate rsa` | Генерира SSH ключове |
-| `username admin` | Локален потребител за SSH |
-| `transport input ssh` | САМО SSH (не Telnet) |
-| `login local` | Използва локална база данни |
-
----
-
-### Стъпка 2: ACL за VTY линии
+### Стъпка 2: Създаване на Standard ACL за VTY
 
 ```cisco
-R1(config)# access-list 50 remark SSH Access Control
+R1(config)# access-list 50 remark SSH Access from Admin VLAN only
 R1(config)# access-list 50 permit 192.168.10.0 0.0.0.255
-R1(config)# access-list 50 deny any log
+R1(config)# access-list 50 deny any
+```
+
+### Стъпка 3: Прилагане на VTY линиите
+
+```cisco
 R1(config)# line vty 0 4
 R1(config-line)# access-class 50 in
 R1(config-line)# exit
+R1(config)# exit
+R1# copy running-config startup-config
 ```
 
-**Обяснение:**
+**Забележка:** За VTY използваме `access-class` (не `ip access-group`)
 
-| Команда | Какво прави |
-|---------|-------------|
-| `access-list 50` | Standard ACL (само source IP) |
-| `permit 192.168.10.0 0.0.0.255` | Позволява Admin VLAN |
-| `deny any log` | Блокира всички останали + логва |
-| `access-class 50 in` | Прилага ACL към VTY линии |
-
-**Важно:** За VTY линии използваме `access-class`, не `ip access-group`!
-
----
-
-### Стъпка 3: Тестване
+### Стъпка 4: Тестване
 
 **От PC1 (Admin VLAN - 192.168.10.11):**
-
 ```
-C:\> ssh -l admin 192.168.10.1
+Desktop → Command Prompt:
+ssh -l admin 192.168.10.1
 Password: cisco123
 
-R1> enable
-Password: [enable secret]
-R1# 
-
-SUCCESS! ✅
+✅ Трябва да се свърже
 ```
+
+**Забележка за Packet Tracer:** Командата е `ssh -l username IP`, за разлика от реалната среда където може и `ssh username@IP`
 
 **От PC3 (IT VLAN - 192.168.20.11):**
-
 ```
-C:\> ssh -l admin 192.168.10.1
-% Connection refused by remote host
+ssh -l admin 192.168.10.1
 
-BLOCKED! ❌
+❌ Connection refused или timeout
 ```
 
----
-
-### Стъпка 4: Проверка на логове
+### Верификация:
 
 ```cisco
-R1# show logging
-```
+R1# show access-lists 50
+Standard IP access list 50
+    10 permit 192.168.10.0, wildcard bits 0.0.0.255
+    20 deny   any
 
-**Ще видите:**
+R1# show line vty 0 4 | include access
+Access Class 50
 ```
-%SEC-6-IPACCESSLOGP: list 50 denied tcp 192.168.20.11(12345) -> 192.168.10.1(22)
-```
-
-**Keyword `log`** в ACL-а записва в логове всеки блокиран опит!
 
 ---
 
-## TROUBLESHOOTING ACL (15 мин)
+## ЧАСТ 7: Troubleshooting ACL (10 мин)
 
-### Често срещани грешки:
+### Често срещани грешки и решения:
+
+| Грешка | Симптом | Как да проверим | Решение |
+|--------|---------|-----------------|---------|
+| **Забравен `permit any`** | Всичко блокирано (implicit deny) | `show access-lists` | Добави `access-list X permit any` |
+| **Грешна посока (IN/OUT)** | ACL не работи | `show ip interface GigE0/0.X` | Промени на правилната посока |
+| **Subnet mask вместо wildcard** | Филтрира грешно | Проверка на командата | Използвай `255.255.255.255 - subnet` |
+| **ACL на физически интерфейс** | Не работи за Router-on-a-Stick | `show ip interface GigE0/0` | Приложи на subinterface (.10, .20) |
+| **Грешен ред на правилата** | Първото правило блокира всичко | `show access-lists` | Пренареди с Named ACL |
 
 ---
 
-### Грешка 1: Забравено "permit any" (Implicit Deny)
+### Полезни команди за troubleshooting:
 
-**Проблем:**
 ```cisco
-access-list 10 deny host 192.168.10.11
-! Липсва "permit any" !!!
+! Преглед на всички ACL-и
+show access-lists
+
+! Преглед на конкретен ACL
+show access-lists 100
+show access-lists IT_TO_ADMIN
+
+! Къде е приложен ACL-а
+show ip interface GigabitEthernet0/0.20
+
+! Статистика (matches)
+show access-lists
+! Гледай "(X matches)" - показва колко пъти е използвано правилото
+
+! Нулиране на counters
+clear ip access-list counters
 ```
 
-**Резултат:**
+---
+
+### Debug команди (ВНИМАВАЙТЕ - генерират много output!):
+
+```cisco
+! Включване
+R1# debug ip packet
+R1# debug ip access-list
+
+! Направете теста (ping, etc.)
+
+! ВАЖНО: Изключете след това!
+R1# undebug all
 ```
-❌ 192.168.10.11 → blocked (explicit deny)
-❌ 192.168.10.12 → blocked (implicit deny)
-❌ ВСИЧКИ останали → blocked (implicit deny)
+
+---
+
+## ЧЕСТО СРЕЩАНИ ПРОБЛЕМИ И РЕШЕНИЯ
+
+### 🔴 Проблем 1: ACL не блокира трафика
+
+**Симптоми:** Ping-овете минават, въпреки че трябва да са блокирани
+
+**Проверки:**
+```cisco
+! 1. ACL създаден ли е?
+show access-lists
+
+! 2. ACL приложен ли е на интерфейса?
+show ip interface GigabitEthernet0/0.20
+
+! 3. Правилна посока (in/out)?
+show run interface GigabitEthernet0/0.20
 ```
+
+**Възможни причини:**
+- ✅ ACL не е приложен към интерфейса
+- ✅ Грешна посока (in вместо out или обратно)
+- ✅ `permit any` в края позволява всичко
+- ✅ ACL е на физическия интерфейс вместо на subinterface
+
+---
+
+### 🔴 Проблем 2: Всичко е блокирано (дори разрешения трафик)
+
+**Причина:** Implicit deny all (забравено `permit any`)
 
 **Решение:**
 ```cisco
 R1(config)# access-list 10 permit any
+! или за Extended ACL:
+R1(config)# access-list 100 permit ip any any
 ```
 
----
-
-### Грешка 2: ACL в грешна посока (IN vs OUT)
-
-**Проблем:**
-```cisco
-interface GigE0/0.20
- ip access-group 100 out    ← Трябва да е IN!
-```
-
-**Как да решим:**
-
-```
-1. Къде е SOURCE на трафика?
-   └─ VLAN 20 (IT)
-
-2. Къде искаме да филтрираме?
-   └─ Когато трафикът ВЛИЗА в router от VLAN 20
-
-3. Коя посока?
-   └─ IN (влизащ трафик от VLAN 20)
-
-Правилно:
-interface GigE0/0.20
- ip access-group 100 in  ✅
-```
-
----
-
-### Грешка 3: Грешен wildcard mask
-
-**Проблем:**
-```cisco
-access-list 10 permit 192.168.10.0 255.255.255.0   ← ГРЕШНО!
-                                    ↑
-                           Subnet mask, не wildcard!
-```
-
-**Резултат:** ACL няма да работи правилно
-
-**Решение:**
-```cisco
-access-list 10 permit 192.168.10.0 0.0.0.255  ✅
-                                    ↑
-                                Wildcard mask
-```
-
----
-
-### Грешка 4: ACL на грешен интерфейс
-
-**Проблем:**
-```cisco
-interface GigE0/0           ← Физическият интерфейс
- ip access-group 100 in     ← Грешно място!
-```
-
-**За Router-on-a-Stick прилагайте на SUBINTERFACE:**
-
-```cisco
-interface GigE0/0.20        ← Subinterface
- ip access-group 100 in  ✅
-```
-
----
-
-### Debug команди:
-
-```cisco
-! Включване на debug
-R1# debug ip packet
-R1# debug ip access-list
-
-! Направете тест (ping, telnet и т.н.)
-
-! ВАЖНО: Изключете debug-а!
-R1# undebug all
-! или
-R1# no debug all
-```
-
-**Внимание:** Debug генерира МНОГО output → може да забави router-а!
-
----
-
-### Проверка на ACL statistics:
-
+**Как да проверя:**
 ```cisco
 R1# show access-lists
+! Виж последното правило - има ли "permit any"?
 ```
-
-**Гледайте "(X matches)":**
-
-```
-Extended IP access list 100
-    10 permit tcp ... eq www (5 matches)     ← Използвано 5 пъти
-    20 permit tcp ... eq 443 (0 matches)     ← Никога не е използвано
-    30 deny ip ... (12 matches)              ← 12 блокирани опита
-```
-
-**Ако matches е 0:**
-- Или правилото не е нужно
-- Или има грешка в конфигурацията
 
 ---
 
-### Clear ACL counters:
+### 🔴 Проблем 3: SSH не работи след прилагане на ACL 50
 
+**Причина:** ACL 50 блокира ТВОЯ IP адрес
+
+**Симптоми:** 
+- SSH connection refused
+- Не можеш да влезеш в router-а
+
+**СПЕШНО решение:**
+```cisco
+! Влез през CONSOLE кабел (физически достъп)
+Router> enable
+Router# configure terminal
+Router(config)# line vty 0 4
+Router(config-line)# no access-class 50 in
+Router(config-line)# exit
+Router(config)# access-list 50 permit 192.168.10.0 0.0.0.255
+Router(config)# line vty 0 4
+Router(config-line)# access-class 50 in
+```
+
+**Превенция:** ВИНАГИ тествай ACL преди да го прилагаш на VTY!
+
+---
+
+### 🟡 Проблем 4: ACL правилата са в грешен ред
+
+**Причина:** First match wins - първото правило блокира всичко
+
+**Пример на грешка:**
+```cisco
+access-list 100 deny ip 192.168.20.0 0.0.0.255 any     ← Блокира ВСИЧКО
+access-list 100 permit tcp 192.168.20.0 0.0.0.255 any eq 80  ← Никога не се достига
+```
+
+**Решение:** Използвай Named ACL за пренареждане
+```cisco
+R1(config)# ip access-list extended MY_ACL
+R1(config-ext-nacl)# no 10   ← Изтрий грешното правило
+R1(config-ext-nacl)# 5 permit tcp 192.168.20.0 0.0.0.255 any eq 80  ← Постави го ПРЕДИ deny
+```
+
+---
+
+### 🟡 Проблем 5: Wildcard mask грешка
+
+**Симптом:** ACL филтрира повече/по-малко отколкото трябва
+
+**Често срещана грешка:**
+```cisco
+! ГРЕШНО (subnet mask вместо wildcard):
+access-list 10 permit 192.168.10.0 255.255.255.0  ❌
+
+! ПРАВИЛНО (wildcard mask):
+access-list 10 permit 192.168.10.0 0.0.0.255  ✅
+```
+
+**Формула:** Wildcard = 255.255.255.255 - Subnet Mask
+
+---
+
+### 🟢 Проблем 6: Не виждам "(X matches)" в show access-lists
+
+**Причина:** Трафик не преминава през ACL правилото
+
+**Проверки:**
+1. Генерирай трафик (ping, web browser)
+2. Изчакай 5-10 секунди
+3. Провери отново: `show access-lists`
+
+**Нулиране на counters:**
 ```cisco
 R1# clear ip access-list counters
 ```
 
-**Занулява "(X matches)" брояча.**
+---
+
+## CHECKLIST ПРЕДИ ПРИЛАГАНЕ НА ACL
+
+```
+☐ Направил съм backup на конфигурацията
+☐ Имам console достъп (физически кабел)
+☐ Тествал съм ACL на test интерфейс първо
+☐ ACL включва "permit any" (ако е нужно)
+☐ Проверил съм реда на правилата (top-to-bottom)
+☐ Уверен съм в посоката (in vs out)
+☐ За VTY: ACL включва МОЯ IP адрес
+☐ Готов съм да отменя промените ако нещо се обърка
+```
 
 ---
 
-## ЧАСТ 6: Port Security на Switch (BONUS) (15 мин)
+## БЪРЗА КОМАНДА ЗА ОТМЯНА НА ACL
+
+```cisco
+! Премахване на ACL от интерфейс:
+R1(config)# interface GigabitEthernet0/0.20
+R1(config-subif)# no ip access-group 100 in
+R1(config-subif)# exit
+
+! Изтриване на целия ACL:
+R1(config)# no access-list 100
+! или
+R1(config)# no ip access-list extended IT_TO_ADMIN
+```
+
+---
+
+## ЧАСТ 8: Port Security на Switch (BONUS) (10 мин)
 
 ### Допълнителна сигурност на Layer 2
 
@@ -1250,55 +865,19 @@ SW1(config-if)# switchport port-security violation restrict
 SW1(config-if)# exit
 ```
 
-**Обяснение:**
-
-| Команда | Какво прави |
-|---------|-------------|
-| `switchport port-security` | Активира port security |
-| `maximum 2` | Максимум 2 MAC адреса |
-| `mac-address sticky` | Автоматично "научава" MAC адресите |
-| `violation restrict` | При нарушение: блокира трафика, НЕ shutdown-ва порта |
-
----
-
 ### Violation modes:
 
 | Mode | Какво прави | Кога да използвам |
 |------|-------------|-------------------|
 | **shutdown** | Shutdown-ва порта (по подразбиране) | Строга сигурност |
-| **restrict** | Блокира трафика, логва, но НЕ shutdown | Средна сигурност |
+| **restrict** | Блокира трафика, логва, НЕ shutdown | Средна сигурност |
 | **protect** | Блокира трафика, БЕЗ логове | Мека сигурност |
-
----
 
 ### Проверка:
 
 ```cisco
 SW1# show port-security interface FastEthernet0/2
-```
-
-**Очакван резултат:**
-```
-Port Security              : Enabled
-Port Status                : Secure-up
-Violation Mode             : Restrict
-Maximum MAC Addresses      : 2
-Total MAC Addresses        : 1
-Configured MAC Addresses   : 0
-Sticky MAC Addresses       : 1
-```
-
-```cisco
 SW1# show port-security address
-```
-
-**Показва научените MAC адреси:**
-```
-Secure Mac Address Table
-------------------------------------------------------------
-Vlan    Mac Address       Type                  Ports
-----    -----------       --------              -----
-  10    0011.2233.4455    SecureSticky          Fa0/2
 ```
 
 ---
@@ -1307,74 +886,68 @@ Vlan    Mac Address       Type                  Ports
 
 ### Задача 1: Блокирай конкретен хост към DNS
 
-Създайте Standard ACL, който блокира PC2 (192.168.10.12) да достъпва DNS server (192.168.10.2).
+Създайте Standard ACL, който блокира PC4 (192.168.20.12) да достъпва DNS server (192.168.10.2).
 
 **Hints:**
-- Standard ACL (номер 1-99)
-- Deny host 192.168.10.12
-- Permit any (важно!)
-- Приложи на правилния интерфейс
+- Използвай Standard ACL (1-99)
+- `deny host 192.168.20.12`
+- НЕ забравяй `permit any`!
+- Приложи на правилния subinterface и посока
 
 ---
 
-### Задача 2: Ограничи протоколи (IT → Admin)
+### Задача 2: Ограничи протоколи
 
-Създайте Extended ACL който позволява:
+Създайте Extended ACL който позволява от IT към Admin:
 - ✅ ICMP (ping)
 - ✅ DNS (UDP port 53)
-- ❌ Всичко останало от IT към Admin
+- ❌ Всичко останало
 
-```cisco
-R1(config)# access-list 110 permit icmp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
-R1(config)# access-list 110 permit udp 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 53
-R1(config)# access-list 110 deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
-R1(config)# access-list 110 permit ip any any
-```
+**Hints:**
+- Extended ACL (100-199)
+- `permit icmp ...`
+- `permit udp ... eq 53`
+- `deny ip ...`
+- `permit ip any any` (за другите VLAN-и)
 
 ---
 
 ### Задача 3: Multi-layer security
 
 Комбинирайте:
-1. ACL на router (inter-VLAN)
-2. Port security на switch портове
-3. SSH access control на VTY линии
+1. ACL на router (inter-VLAN control)
+2. Port security на 2 switch порта
+3. SSH access control само от Admin VLAN
 
-**Документирайте всяка стъпка!**
+**Документирайте конфигурацията в таблица!**
 
 ---
 
-### Задача 4: Log analysis
+## ДОКУМЕНТАЦИЯ
 
-Добавете `log` keyword към deny правила:
+### Таблица с ACL правила:
 
-```cisco
-access-list 100 deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255 log
-```
-
-Направете опити за блокиран трафик, после:
-
-```cisco
-R1# show logging
-```
-
-Анализирайте кой се опитва да достъпи какво!
+| ACL | Тип | Име/Номер | Действие | Source | Destination | Service | Приложен на |
+|-----|-----|-----------|----------|--------|-------------|---------|-------------|
+| 1 | Standard | 10 | Deny | 192.168.10.12 | any | any | GigE0/0.10 out |
+| 2 | Extended | 100 | Permit | 192.168.20.0/24 | 192.168.10.0/24 | HTTP/HTTPS | GigE0/0.20 in |
+| 3 | Named | IT_TO_ADMIN | Permit | 192.168.20.0/24 | 192.168.10.0/24 | HTTP/HTTPS | GigE0/0.20 in |
+| 4 | Standard | 50 | Permit | 192.168.10.0/24 | any | SSH | VTY 0-4 |
 
 ---
 
 ## BEST PRACTICES ЗА ACL
 
 ```
-✅ Extended ACL близо до source (filtering early)
+✅ Extended ACL близо до source (спираме трафика рано)
 ✅ Standard ACL близо до destination
-✅ Винаги добавяйте "permit any" (ако е нужно)
-✅ Използвайте Named ACL (по-четливо)
+✅ Винаги добавяйте "permit any" (ако искате да разрешите останалото)
+✅ Използвайте Named ACL (по-четливо и лесно за редакция)
 ✅ Добавяйте remark коментари
-✅ Тествайте преди production!
+✅ Тествайте ПРЕДИ production!
 ✅ Документирайте в таблица
 ✅ Записвайте конфигурацията след промени
-✅ Използвайте "log" за security events
-✅ Периодично проверявайте "show access-lists"
+✅ Проверявайте "(X matches)" в show access-lists
 ```
 
 ---
@@ -1384,33 +957,33 @@ R1# show logging
 ```
 ☐ Standard ACL създаден и тестван
 ☐ Extended ACL създаден и тестван
-☐ Named ACL създаден
+☐ Named ACL създаден и тестван
 ☐ Разбирам разликата между IN и OUT
-☐ Разбирам wildcard masks
-☐ Разбирам implicit deny
+☐ Разбирам wildcard masks (0.0.0.255 за /24)
+☐ Разбирам implicit deny all
 ☐ ACL приложен в правилна посока
 ☐ SSH access control конфигуриран
-☐ Port security активиран
-☐ Тестовете потвърждават permit правилата
-☐ Тестовете потвърждават deny правилата
+☐ Port security тестван (bonus)
+☐ Ping тестовете потвърждават permit правилата
+☐ Ping тестовете потвърждават deny правилата
 ☐ ACL правилата документирани в таблица
-☐ Логовете прегледани
+☐ Конфигурацията е запазена
 ```
 
 ---
 
 ## КАКВО НАУЧИХМЕ
 
-1. ✅ Що е то ACL (аналогия с охранител)
-2. ✅ Standard vs Extended ACL (разлики и употреба)
-3. ✅ Wildcard mask (как работи, примери)
-4. ✅ ACL processing (top-to-bottom, first match)
-5. ✅ Implicit deny all (невидимото правило)
-6. ✅ IN vs OUT direction (как да решим)
-7. ✅ Named ACL (модерен подход)
+1. ✅ Що е то ACL (аналогия с охранител на нощен клуб)
+2. ✅ Standard vs Extended ACL (разлики и кога да използваме)
+3. ✅ Wildcard mask (обратното на subnet mask)
+4. ✅ ACL processing (top-to-bottom, first match wins)
+5. ✅ Implicit deny all (невидимото правило в края)
+6. ✅ IN vs OUT direction (къде да приложим ACL)
+7. ✅ Named ACL (модерен и препоръчителен подход)
 8. ✅ VTY access control (SSH security)
 9. ✅ Port security (Layer 2 защита)
-10. ✅ Troubleshooting ACL (debug, show commands)
+10. ✅ Troubleshooting ACL (show commands, debug)
 
 ---
 
@@ -1435,16 +1008,19 @@ interface GigE0/0.20
 
 ### Named ACL:
 ```cisco
-ip access-list extended ADMIN_TO_IT
- permit ip 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255
-interface GigE0/0.10
- ip access-group ADMIN_TO_IT out
+ip access-list extended WEB_ACCESS
+ remark Allow HTTP and HTTPS only
+ permit tcp any any eq 80
+ permit tcp any any eq 443
+ deny ip any any
+interface GigE0/0.20
+ ip access-group WEB_ACCESS in
 ```
 
 ### VTY Access:
 ```cisco
 access-list 50 permit 192.168.10.0 0.0.0.255
-access-list 50 deny any log
+access-list 50 deny any
 line vty 0 4
  access-class 50 in
 ```
@@ -1461,11 +1037,10 @@ interface Fa0/2
 
 ### Show Commands:
 ```cisco
-show access-lists
-show ip interface GigE0/0.20
-show logging
-show port-security interface Fa0/2
-show port-security address
+show access-lists                    ! Всички ACL-и
+show ip interface GigE0/0.20         ! ACL на интерфейс
+show port-security interface Fa0/2   ! Port security статус
+show port-security address           ! Научени MAC адреси
 ```
 
 ---
@@ -1477,13 +1052,18 @@ show port-security address
 - Автоматизация с Blockly/Python
 - Smart Home/Office сценарии
 
-**Това е финалната стъпка преди курсовия проект!**
+
 
 **Запазете файла като:** `Sem5_ACL_YourName.pkt`
 
 ---
 
-**Успех! ACL-ите са мощен инструмент за мрежова сигурност! **
+**Успех с лаба! ACL-ите са мощен инструмент за мрежова сигурност!**
+
+
+
+**гл. ас. Светослав Атанасов**  
+svetoslav.atanasov@trakia-uni.bg
 
 
 <script data-goatcounter="https://satanasov.goatcounter.com/count"
