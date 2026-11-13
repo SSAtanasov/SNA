@@ -1,8 +1,8 @@
-# D03: Wireshark и PDU – поток КСК
+# D03: Wireshark и PDU – поток КСК (напреднали)
 
-Упражненията показват в реален трафик същите протоколи, които поток АКС + ИКТО настройва в Packet Tracer. Всяко упражнение има задължителен минимум и разширение, обявени в началото му.
+Упражненията показват в реален трафик същите протоколи, които потокът АКС + ИКТО настройва в Packet Tracer. Подредени са по възходяща сложност: от каналния слой към услугите, транспорта, пътя на пакета през няколко мрежи и накрая диагностиката. Всяко упражнение започва с блок „Преди упражнението“ и има задължителен минимум и разширение, обявени в началото му.
 
-**Среда:** Windows 10/11, Wireshark 4.6.x с Npcap. Wireshark се стартира като администратор.
+**Среда:** Windows 10/11, Wireshark 4.6.x с Npcap. Wireshark се стартира като администратор. За D03-06 – Packet Tracer 8.2.2.
 
 ---
 
@@ -10,44 +10,33 @@
 
 | № | Упражнение | Време | Основни протоколи |
 |---|------------|-------|-------------------|
-| D03-01 | [Преглед на прихванат мрежов трафик](D03-01_View_Captured_Traffic_in_Wireshark.md) | 45 мин | ARP, `ping`, `arp -a` |
-| D03-02 | Packet Tracer, работа с PDU (`D03-02.pka` от преподавателя) | – | PDU, капсулиране |
-| D03-03 | [Ethernet рамки](D03-03_Examine_Ethernet_Frames.md) | 45 мин | Ethernet II, MAC, OUI |
-| D03-04 | [IPv4 пакети](D03-04_IPv4_Packets_in_Wireshark.md) | 60 мин | IPv4 заглавка, TTL, `tracert` |
-| D03-05 | [IPv6 пакети](D03-05_IPv6_Packets_in_Wireshark.md) | 60 мин | IPv6, ICMPv6, NDP |
-| D03-06 | [TCP комуникационен процес](D03-06_TCP_Communication_Process.md) | 60 мин | Three-way handshake, флагове |
-| D03-07 | [DHCP процесът (DORA)](D03-07_DHCP_in_Wireshark.md) | 45 мин | DHCP, опции, lease |
-| D03-08 | [DNS запитвания и отговори](D03-08_DNS_in_Wireshark.md) | 45 мин | DNS, кеш, NXDOMAIN |
-| D03-09 | [ICMP съобщения и tracert](D03-09_ICMP_and_Traceroute.md) | 45 мин | ICMP типове, Time Exceeded |
-| D03-10 | [Пътят на пакета през шлюз и NAT](D03-10_Packet_Path_and_NAT_PT.md) | 50 мин | MAC и IP по пътя, PAT (Packet Tracer) |
-| D03-11 | [UDP, TCP и QUIC](D03-11_UDP_TCP_QUIC.md) | 45 мин | UDP, QUIC, SNI |
-| D03-12 | [Статистики във Wireshark](D03-12_Traffic_Statistics.md) | 45 мин | Protocol Hierarchy, Conversations |
-| D03-13 | [Диагностика по готови прихващания](D03-13_Troubleshooting_with_Captures.md) | 60 мин | ARP, DNS, ICMP, TCP RST |
+| D03-01 | [Ethernet рамки и ARP](D03-01_Ethernet_ARP.md) | 90 мин | Ethernet II, MAC, ARP |
+| D03-02 | [IPv4 пакети, TTL, ICMP и tracert](D03-02_IPv4_ICMP.md) | 90 мин | IPv4 заглавка, ICMP, Time Exceeded |
+| D03-03 | [Услуги в мрежата – DHCP и DNS](D03-03_DHCP_DNS.md) | 90 мин | DHCP (DORA, lease), DNS |
+| D03-04 | [Транспортен слой – UDP и TCP](D03-04_TCP_UDP.md) | 90 мин | UDP, three-way handshake, портове; QUIC (разширение) |
+| D03-05 | [IPv6 пакети и Neighbor Discovery](D03-05_IPv6.md) | 90 мин | IPv6, ICMPv6, NDP |
+| D03-06 | [Пътят на пакета през мрежите – маршрутизиране, VLAN и NAT](D03-06_Packet_Path_VLAN_NAT_PT.md) | 90 мин | MAC и IP по пътя, 802.1Q, PAT (Packet Tracer) |
+| D03-07 | [Диагностика по прихващания](D03-07_Diagnostics.md) | според времето | ARP, DNS, ICMP, TCP RST; статистики (разширение) |
 
 ---
 
-## II. Препоръчана последователност
-
-D03-01 → D03-03 → D03-04 → D03-06 (слоеве 2–4) → D03-07 → D03-08 (услуги) → D03-09 → D03-10 (пътят на пакета) → D03-13 (диагностика). D03-05, D03-11 и D03-12 разширяват същите теми.
-
----
-
-## III. Файлове за прихващане
+## II. Файлове за прихващане
 
 Подготвени за обучение; адресите извън локалните мрежи са от диапазоните за документация.
 
 | Файл | Упражнение |
 |------|------------|
-| [D03-11_quic.pcapng](captures/D03-11_quic.pcapng) | D03-11 – резервен запис на HTTP/3 |
-| [D03-11_quic_keylog.txt](captures/D03-11_quic_keylog.txt) | D03-11 – ключове за разшифроване (разширение) |
-| [D03-13_case1.pcapng](captures/D03-13_case1.pcapng) | D03-13, случай 1 |
-| [D03-13_case2.pcapng](captures/D03-13_case2.pcapng) | D03-13, случай 2 |
-| [D03-13_case3.pcapng](captures/D03-13_case3.pcapng) | D03-13, случай 3 |
-| [D03-13_case4.pcapng](captures/D03-13_case4.pcapng) | D03-13, случай 4 |
+| [D03-04_quic.pcapng](captures/D03-04_quic.pcapng) | D03-04 – резервен запис на HTTP/3 |
+| [D03-04_quic_keylog.txt](captures/D03-04_quic_keylog.txt) | D03-04 – ключове за разшифроване (разширение) |
+| [D03-05_ipv6.pcapng](captures/D03-05_ipv6.pcapng) | D03-05 – ping и HTTP по IPv6, ако в залата няма IPv6 |
+| [D03-07_case1.pcapng](captures/D03-07_case1.pcapng) | D03-07, случай 1 |
+| [D03-07_case2.pcapng](captures/D03-07_case2.pcapng) | D03-07, случай 2 |
+| [D03-07_case3.pcapng](captures/D03-07_case3.pcapng) | D03-07, случай 3 |
+| [D03-07_case4.pcapng](captures/D03-07_case4.pcapng) | D03-07, случай 4 |
 
 ---
 
-## IV. Чести затруднения
+## III. Чести затруднения
 
 - **Не се виждат интерфейси.** Стартирайте Wireshark като администратор и проверете дали е инсталиран Npcap.
 - **Виждам само собствения си трафик.** Това е нормално в комутирана мрежа: комутаторът изпраща до вашия порт само вашите рамки и broadcast/multicast. Чуждият трафик се вижда само през огледален порт (SPAN).
