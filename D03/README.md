@@ -8,15 +8,15 @@
 
 ## I. Упражнения
 
-| № | Упражнение | Време | Основни протоколи |
+| № | Упражнение | Основни протоколи |
 |---|------------|-------|-------------------|
-| D03-01 | [Ethernet рамки и ARP](D03-01_Ethernet_ARP.md) | 90 мин | Ethernet II, MAC, ARP |
-| D03-02 | [IPv4 пакети, TTL, ICMP и tracert](D03-02_IPv4_ICMP.md) | 90 мин | IPv4 заглавка, ICMP, Time Exceeded |
-| D03-03 | [Услуги в мрежата – DHCP и DNS](D03-03_DHCP_DNS.md) | 90 мин | DHCP (DORA, lease), DNS |
-| D03-04 | [Транспортен слой – UDP и TCP](D03-04_TCP_UDP.md) | 90 мин | UDP, three-way handshake, портове; QUIC (разширение) |
-| D03-05 | [IPv6 пакети и Neighbor Discovery](D03-05_IPv6.md) | 90 мин | IPv6, ICMPv6, NDP |
-| D03-06 | [Пътят на пакета през мрежите – маршрутизиране, VLAN и NAT](D03-06_Packet_Path_VLAN_NAT_PT.md) | 90 мин | MAC и IP по пътя, 802.1Q, PAT (Packet Tracer) |
-| D03-07 | [Диагностика по прихващания](D03-07_Diagnostics.md) | според времето | ARP, DNS, ICMP, TCP RST; статистики (разширение) |
+| D03-01 | [Ethernet рамки и ARP](D03-01_Ethernet_ARP.md) | Ethernet II, MAC, ARP |
+| D03-02 | [IPv4 пакети, TTL, ICMP и tracert](D03-02_IPv4_ICMP.md) | IPv4 заглавка (хедър), ICMP, Time Exceeded |
+| D03-03 | [Услуги в мрежата – DHCP и DNS](D03-03_DHCP_DNS.md) | DHCP (DORA, lease), DNS |
+| D03-04 | [Транспортен слой – UDP и TCP](D03-04_TCP_UDP.md) | UDP, three-way handshake, портове; QUIC (разширение) |
+| D03-05 | [IPv6 пакети и Neighbor Discovery](D03-05_IPv6.md) | IPv6, ICMPv6, NDP |
+| D03-06 | [Пътят на пакета през мрежите – маршрутизиране, VLAN и NAT](D03-06_Packet_Path_VLAN_NAT_PT.md) | MAC и IP по пътя, 802.1Q, PAT (Packet Tracer) |
+| D03-07 | [Диагностика по прихващания](D03-07_Diagnostics.md) | ARP, DNS, ICMP, TCP RST; статистики (разширение) |
 
 ---
 
