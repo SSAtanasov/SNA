@@ -68,7 +68,7 @@
 └─────────────────────────────────────────┘
 ```
 
-**Защо VLAN 1 е проблем в production:**
+**Защо VLAN 1 е проблем в production (реална, работеща бизнес мрежа):**
 
 | Риск | Обяснение |
 |------|-----------|
@@ -891,7 +891,7 @@ ping 192.168.10.11    (към PC2 - СЪЩО в VLAN 10)
 **Какво се случва:**
 1. PC1 вижда че 192.168.10.11 е в същата мрежа (192.168.10.0/24)
 2. Изпраща директно към PC2 (без router)
-3. Switch получава frame на Fa0/2 (VLAN 10) → форвардва на Fa0/3 (VLAN 10)
+3. Switch получава frame на Fa0/2 (VLAN 10) → препраща на Fa0/3 (VLAN 10)
 4. **Router НЕ участва** (Layer 2 switching)
 
 ---
@@ -912,7 +912,7 @@ ping 192.168.20.10    (към PC3 в VLAN 20)
    └─ Изпраща frame с Destination MAC = Gateway (192.168.10.1)
 
 2. Switch SW1 получава frame на Fa0/2 (access VLAN 10)
-   └─ Форвардва през trunk Fa0/1
+   └─ Препраща през trunk Fa0/1
    └─ Добавя 802.1Q tag = 10
 
 3. Router R1 получава tagged frame на GigE0/0
@@ -922,7 +922,7 @@ ping 192.168.20.10    (към PC3 в VLAN 20)
 
 4. Switch SW1 получава frame с tag = 20 на trunk Fa0/1
    └─ Премахва tag-а
-   └─ Форвардва на Fa0/4 (access VLAN 20) → PC3
+   └─ Препраща на Fa0/4 (access VLAN 20) → PC3
 
 5. PC3 получава ICMP request → изпраща ICMP reply
    └─ Същият процес, но в обратна посока
@@ -1212,7 +1212,7 @@ Switch SW1:
   └─ Получава tagged frame (VLAN 20) на Fa0/1 (trunk)
   └─ MAC таблица: PC3's MAC е на Fa0/4
   └─ Премахва 802.1Q tag
-  └─ Форвардва untagged frame на Fa0/4 (access VLAN 20)
+  └─ Препраща untagged frame на Fa0/4 (access VLAN 20)
 
 ┌─────────────────────────────────────────────────────────┐
 │ СТЪПКА 5: PC3 получава ICMP Echo Request               │
