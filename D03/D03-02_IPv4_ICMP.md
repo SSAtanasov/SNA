@@ -200,7 +200,7 @@ Ethernet adapter Ethernet:
    DNS Servers . . . . . . . . . . . : 192.168.1.1
 ```
 
-**c.** Запишете вашите:
+**c.** Запишете в текстов файл вашите:
 - IPv4 адрес: _______
 - Default Gateway: _______
 - DNS Server: _______
