@@ -220,11 +220,11 @@ Ethernet adapter Ethernet:
 
 ### Стъпка 1: Определяне на IP адреса на default gateway на вашия компютър
 
-**a.** Отворете Windows Command Prompt.
+**a.** Отворете Windows Command Prompt (Windows button + R -> cmd).
 
 **b.** Въведете командата `ipconfig`. (За Linux използвайте `ip route`, а за macOS – `netstat -rn`.)
 
-**c.** Запишете IP адреса на default gateway на компютъра.
+**c.** Запишете IP адреса (в текстов файл) на default gateway на компютъра.
 
 ```
 C:\>ipconfig
